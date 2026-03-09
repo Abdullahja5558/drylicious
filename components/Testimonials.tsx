@@ -94,8 +94,8 @@ const Testimonials = () => {
   const prevPage = () => setCurrentPage((prev) => (prev - 1 + reviewPages.length) % reviewPages.length);
 
   return (
-    <section className="py-20 bg-[#FDFCF9] overflow-hidden px-6">
-      <div className="max-w-7xl mx-auto relative">
+    <section className="py-20 bg-[#FDFCF9] overflow-hidden px-8 md:px-12">
+      <div className="max-w-6xl mx-auto relative">
         
         {/* Section Header */}
         <div className="text-center mb-36">
@@ -119,17 +119,16 @@ const Testimonials = () => {
         </div>
 
         {/* --- Navigation Buttons (Left & Right) --- */}
-        {/* Hidden on small screens, shown as absolute on MD+ */}
         <div className="hidden md:block">
-           <button 
+            <button 
               onClick={prevPage}
-              className="absolute left-[-40px] lg:left-[-80px] top-1/2 -translate-y-1/2 z-20 w-16 h-16 rounded-full border border-black/10 flex items-center justify-center bg-black backdrop-blur-sm hover:bg-[#1a1a1a] hover:text-white transition-all duration-500 group shadow-sm hover:shadow-xl"
+              className="absolute left-[-60px] lg:left-[-100px] top-1/2 -translate-y-1/2 z-20 w-16 h-16 rounded-full border border-black/10 flex items-center justify-center bg-black text-white hover:bg-[#1a1a1a] transition-all duration-500 group shadow-sm hover:shadow-xl"
             >
               <ChevronLeft size={28} className="group-hover:-translate-x-1 transition-transform" />
             </button>
             <button 
               onClick={nextPage}
-              className="absolute right-[-40px] lg:right-[-80px] top-1/2 -translate-y-1/2 z-20 w-16 h-16 rounded-full border border-black/10 flex items-center justify-center bg-black backdrop-blur-sm hover:bg-[#1a1a1a] hover:text-white transition-all duration-500 group shadow-sm hover:shadow-xl"
+              className="absolute right-[-60px] lg:right-[-100px] top-1/2 -translate-y-1/2 z-20 w-16 h-16 rounded-full border border-black/10 flex items-center justify-center bg-black text-white hover:bg-[#1a1a1a] transition-all duration-500 group shadow-sm hover:shadow-xl"
             >
               <ChevronRight size={28} className="group-hover:translate-x-1 transition-transform" />
             </button>
