@@ -1,0 +1,238 @@
+"use client";
+
+import React, { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { useParams, useRouter } from 'next/navigation';
+import { ArrowLeft, MessageCircle, Minus, Plus, ShieldCheck, Zap, Star, Leaf, ShoppingBag } from 'lucide-react';
+import { WHOLE_SPICES } from '@/app/categories/whole-spices/page';
+import { useCart } from '@/context/CartContext'; // Cart Context Import
+import PremiumNavbar from '@/components/Navbar';
+
+const WholeSpiceDetail = () => {
+  const { id } = useParams();
+  const router = useRouter();
+  const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart(); // Destructure addToCart
+
+  const spice = WHOLE_SPICES.find(s => s.id === id);
+
+  // Cart Handler
+  const handleAddToCart = () => {
+    if (spice) {
+      addToCart({
+        id: spice.id,
+        name: spice.name,
+        price: spice.price,
+        qty: quantity,
+        image: spice.image,
+        weight: "250g" // Default weight for Whole Spices
+      });
+    }
+  };
+
+  const whatsappUrl = useMemo(() => {
+    if (!spice) return "#";
+    const phoneNumber = "923367999509";
+    const totalPrice = spice.price * quantity;
+    const message = `Asalam-o-Alaikum Drylicious! 👋\n\nI want to order Whole Spice:\n📦 Product: ${spice.name}\n🔢 Quantity: ${quantity} units (250g each)\n💰 Total: Rs. ${totalPrice}\n\nPlease confirm my order.`;
+    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  }, [spice, quantity]);
+
+  if (!spice) return (
+    <div className="h-screen flex flex-col items-center justify-center font-serif bg-[#FBF9F4] px-6 text-center">
+      <h2 className="text-xl md:text-2xl mb-4 tracking-tighter uppercase font-light">Archive Entry Not Found</h2>
+      <button onClick={() => router.push('/')} className="underline uppercase tracking-[0.3em] text-[10px] font-black">Back to Home</button>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#FBF9F4] text-[#111111] selection:bg-orange-100">
+
+      
+      <PremiumNavbar/>
+      
+      {/* --- TOP NAVIGATION --- */}
+      <nav className="fixed top-0 left-0 w-full z-[100] p-4 md:p-10 pointer-events-none">
+        <motion.button 
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          onClick={() => router.back()}
+          className="pointer-events-auto flex items-center gap-2 md:gap-3 px-4 py-2.5 md:px-6 md:py-3 bg-white/80 backdrop-blur-2xl border border-black/[0.03] rounded-full shadow-lg hover:shadow-xl transition-all group"
+        >
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em]">Go Back</span>
+        </motion.button>
+      </nav>
+
+      <main className="max-w-[1400px] mx-auto px-4 sm:px-8 md:px-12 pt-24 md:pt-40 pb-32 lg:pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 lg:gap-24 items-start">
+          
+          {/* --- LEFT: IMMERSIVE IMAGE --- */}
+          <div className="lg:col-span-7 lg:sticky lg:top-32">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative aspect-[4/5] sm:aspect-square lg:aspect-[4/5] rounded-[30px] md:rounded-[60px] lg:rounded-[80px] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] group bg-stone-100"
+            >
+              <motion.img 
+                src={spice.image} 
+                alt={spice.name} 
+                className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-[3s] ease-out" 
+              />
+              <div className="absolute inset-0 bg-black/5" />
+              
+              <div className="absolute top-5 right-5 md:top-8 md:right-8 bg-white/20 backdrop-blur-xl border border-white/30 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col items-center shadow-2xl">
+                 <Star size={14} className="text-white fill-white mb-1 animate-pulse" />
+                 <span className="text-[7px] md:text-[8px] font-black text-white uppercase tracking-tighter italic">Origin Pure</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* --- RIGHT: DETAIL CONTENT --- */}
+          <div className="lg:col-span-5 flex flex-col pt-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="space-y-8 md:space-y-12"
+            >
+              {/* Header */}
+              <header className="space-y-4 md:space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-[1.5px] w-8 md:w-10 bg-orange-900/30" />
+                  <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] md:tracking-[0.5em] text-orange-900/50">Raw Whole Spices</span>
+                </div>
+                
+                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif leading-[1.1] md:leading-[0.85] tracking-tighter text-[#111111]">
+                  {spice.name.split(' ')[0]} <br className="hidden sm:block" />
+                  <span className="italic font-light text-orange-900/30">{spice.name.split(' ').slice(1).join(' ')}</span>
+                </h1>
+                
+                <div className="flex items-center gap-6 md:gap-10 pt-2">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Current Value</span>
+                    <p className="text-3xl md:text-5xl font-medium tracking-tighter text-[#111111]">Rs. {spice.price * quantity}</p>
+                  </div>
+                  <div className="h-10 w-px bg-black/5" />
+                  <div className="flex flex-col">
+                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Pouch Size</span>
+                    <p className="text-lg md:text-xl font-serif italic text-orange-900/60 leading-none">250 Grams</p>
+                  </div>
+                </div>
+              </header>
+
+              {/* Narrative */}
+              <p className="text-base md:text-xl lg:text-2xl text-[#333333] font-light leading-relaxed italic border-l-2 border-orange-900/10 pl-5 md:pl-8">
+                "Our {spice.name} is selected for its high essential oil content and size, ensuring maximum potency."
+              </p>
+
+              {/* Quantity Section */}
+              <div className="space-y-4">
+                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Specify Quantity</span>
+                <div className="flex items-center bg-white border border-black/5 rounded-full p-1.5 md:p-2 w-fit shadow-sm">
+                  <motion.button 
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))} 
+                    className="w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:bg-orange-50 transition-colors"
+                  >
+                    <Minus size={18} className="text-gray-400" />
+                  </motion.button>
+                  <span className="w-12 md:w-20 text-center font-bold text-2xl md:text-4xl tabular-nums tracking-tighter">{quantity}</span>
+                  <motion.button 
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setQuantity(quantity + 1)} 
+                    className="w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:bg-orange-50 transition-colors"
+                  >
+                    <Plus size={18} className="text-[#111111]" />
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Action Buttons (Desktop) */}
+              <div className="hidden lg:grid grid-cols-2 gap-4 pt-4">
+                <motion.button
+                  onClick={handleAddToCart}
+                  whileHover={{ y: -5 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center justify-center gap-3 py-6 bg-white border border-black/10 text-black rounded-[25px] shadow-sm hover:shadow-xl hover:bg-black hover:text-white transition-all duration-500 group"
+                >
+                  <ShoppingBag size={20} />
+                  <span className="text-[11px] font-black uppercase tracking-[0.3em]">Add to Basket</span>
+                </motion.button>
+
+                <motion.a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -5 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center justify-center gap-3 py-6 bg-[#111111] text-white rounded-[25px] shadow-2xl hover:bg-[#25D366] transition-all duration-500"
+                >
+                  <MessageCircle size={20} fill="white" />
+                  <span className="text-[11px] font-black uppercase tracking-[0.3em]">Order Now</span>
+                </motion.a>
+              </div>
+
+              {/* Trust Indicators & Tags remain same... */}
+              <div className="grid grid-cols-2 gap-4 md:gap-8 pt-8 md:pt-12 border-t border-black/[0.05]">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 rounded-xl bg-white border border-black/5 flex items-center justify-center shadow-sm text-emerald-600">
+                    <ShieldCheck size={18} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[8px] md:text-[9px] font-black uppercase">Lab Certified</span>
+                    <span className="text-[8px] text-gray-400 uppercase font-bold">100% Purity</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 rounded-xl bg-white border border-black/5 flex items-center justify-center shadow-sm text-orange-600">
+                    <Zap size={18} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[8px] md:text-[9px] font-black uppercase">High Potency</span>
+                    <span className="text-[8px] text-gray-400 uppercase font-bold">Fresh Batch</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </main>
+
+      {/* --- MOBILE STICKY FOOTER --- */}
+      <div className="lg:hidden fixed bottom-0 left-0 w-full p-4 z-[110] flex gap-2 bg-gradient-to-t from-[#FBF9F4] via-[#FBF9F4] to-transparent">
+        {/* Mobile Add to Cart */}
+        <motion.button
+          onClick={handleAddToCart}
+          className="flex-none p-5 bg-white border border-black/10 rounded-[20px] shadow-xl active:scale-95 transition-all"
+        >
+          <ShoppingBag size={22} />
+        </motion.button>
+        
+        {/* Mobile WhatsApp Button */}
+        <motion.a
+          href={whatsappUrl}
+          target="_blank"
+          className="flex-grow flex items-center justify-between px-6 py-5 bg-[#111111] text-white rounded-[20px] shadow-2xl active:scale-95 transition-all"
+        >
+          <div className="flex flex-col">
+              <span className="text-[7px] font-black uppercase tracking-widest opacity-40 text-left">Confirm Order</span>
+              <span className="text-lg font-bold tracking-tighter">Rs. {spice.price * quantity}</span>
+          </div>
+          <div className="flex items-center gap-2">
+              <span className="text-[9px] font-black uppercase tracking-widest">Order</span>
+              <MessageCircle size={18} fill="white" />
+          </div>
+        </motion.a>
+      </div>
+
+      <footer className="py-20 flex flex-col items-center opacity-10">
+         <div className="h-16 w-px bg-black mb-6" />
+         <span className="text-[9px] font-black uppercase tracking-[0.8em]">Artisanal Heritage</span>
+      </footer>
+    </div>
+  );
+};
+
+export default WholeSpiceDetail;
