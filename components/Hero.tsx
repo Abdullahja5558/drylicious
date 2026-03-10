@@ -44,7 +44,7 @@ const Hero = () => {
         >
           Drylicious{" "}
           <span className="italic font-light text-orange-800/40 whitespace-nowrap block md:inline text-4xl md:text-6xl lg:text-[90px]">
-            From farm to flowers
+            From farm to flavour
           </span>
         </motion.h1>
 
