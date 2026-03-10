@@ -5,11 +5,12 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, ArrowUpRight, Sparkles, Leaf, ShieldCheck, Zap, Medal } from 'lucide-react';
 
+// --- UPDATED PRICES CALCULATED FOR 100G ---
 export const PURE_SPICES = [
   {
     id: 'turmeric',
     name: "Organic Turmeric",
-    price: 450,
+    price: 180, // 450/250 * 100
     image: "/organic-turmeric.png",
     tag: "Immunity",
     origin: "Southern Punjab"
@@ -17,7 +18,7 @@ export const PURE_SPICES = [
   {
     id: 'chilli',
     name: "Red Chilli Powder",
-    price: 300,
+    price: 120, // 300/250 * 100
     image: "/red-chilli.png",
     tag: "High-Heat",
     origin: "Sindh Valley"
@@ -25,7 +26,7 @@ export const PURE_SPICES = [
   {
     id: 'black-pepper',
     name: "Black Pepper",
-    price: 725,
+    price: 290, // 725/250 * 100
     image: "/black-pepper.png",
     tag: "Bold Grade",
     origin: "Malabar Import"
@@ -33,7 +34,7 @@ export const PURE_SPICES = [
   {
     id: 'coriander',
     name: "Whole Coriander",
-    price: 250,
+    price: 100, // 250/250 * 100
     image: "/coriander.png",
     tag: "Roasted",
     origin: "Upper Indus"
@@ -41,7 +42,7 @@ export const PURE_SPICES = [
   {
     id: 'cumin',
     name: "Pure Cumin Seeds",
-    price: 450,
+    price: 180, // 450/250 * 100
     image: "/cuminn.png",
     tag: "Aromatic",
     origin: "Balochistan"
@@ -49,7 +50,7 @@ export const PURE_SPICES = [
   {
     id: 'cloves',
     name: "Premium Cloves",
-    price: 950,
+    price: 380, // 950/250 * 100
     image: "/clovess.png",
     tag: "Hand-Picked",
     origin: "Zanzibar Special"
@@ -60,7 +61,7 @@ const SpiceListing = () => {
   return (
     <div className="min-h-screen bg-[#FBF9F4] text-[#1a1a1a] selection:bg-orange-200 overflow-x-hidden">
       
-      {/* --- FIXED HOME BUTTON (Stays in place) --- */}
+      {/* --- FIXED HOME BUTTON --- */}
       <div className="fixed top-8 left-8 z-[150]">
         <Link href="/">
           <motion.div 
@@ -152,7 +153,7 @@ const SpiceListing = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-3xl font-medium text-[#111111]">Rs.{spice.price}</p>
-                      <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1">250g Pack</p>
+                      <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1">100g Pack</p>
                     </div>
                   </div>
                   <div className="h-[1.5px] w-full bg-black/[0.04] relative">
@@ -169,10 +170,11 @@ const SpiceListing = () => {
           ))}
         </div>
 
-       <section className="mt-50 border-y border-black/[0.03] flex flex-col items-center text-center">
+        {/* --- LUXURY CALLOUT --- */}
+        <section className="mt-40 py-40 border-y border-black/[0.03] flex flex-col items-center text-center">
             <Medal className="text-orange-900/20 mb-10 w-20 h-20" />
             <h4 className="text-5xl md:text-8xl font-serif tracking-tighter mb-8 max-w-4xl leading-[0.85]">
-             The gold standard for home kitchens,<br />
+              The gold standard for home kitchens,<br />
               <span className="italic text-orange-900/30">trusted by thousands daily.</span>
             </h4>
             <div className="flex items-center gap-4 mt-10">
@@ -181,7 +183,6 @@ const SpiceListing = () => {
                <div className="h-px w-20 bg-orange-900/20" />
             </div>
         </section>
-
 
       </main>
     </div>

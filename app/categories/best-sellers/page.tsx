@@ -5,14 +5,13 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, Star, Crown, ShoppingBag, Medal, Sparkles, Trophy } from 'lucide-react';
 
-// --- SELECTION FROM YOUR 15 WHOLE SPICES ---
-// Added "weight" property to each item
+// --- UPDATED PRICES CALCULATED FOR 100G ---
 const BEST_SELLING_WHOLE_SPICES = [
   { 
     id: 'green-cardamom', 
     name: "Sabz Ilaichi", 
-    price: 3450, 
-    weight: "250g",
+    price: 1380, // Calculated from 3450/250g * 100
+    weight: "100g",
     image: "/ilaiche.jpeg", 
     tag: "High Demand", 
     rating: "5.0/5",
@@ -22,8 +21,8 @@ const BEST_SELLING_WHOLE_SPICES = [
   { 
     id: 'black-pepper', 
     name: "Kali Mirch Sabit", 
-    price: 725, 
-    weight: "250g",
+    price: 290, // Calculated from 725/250g * 100
+    weight: "100g",
     image: "/kali-mirch.jpeg", 
     tag: "Chef's Choice", 
     rating: "4.9/5",
@@ -33,8 +32,8 @@ const BEST_SELLING_WHOLE_SPICES = [
   { 
     id: 'cumin', 
     name: "Safaid Zeera", 
-    price: 450, 
-    weight: "250g",
+    price: 180, // Calculated from 450/250g * 100
+    weight: "100g",
     image: "/zera.jpeg", 
     tag: "Top Rated", 
     rating: "4.9/5",
@@ -44,8 +43,8 @@ const BEST_SELLING_WHOLE_SPICES = [
   { 
     id: 'cloves', 
     name: "Long (Cloves)", 
-    price: 950, 
-    weight: "250g",
+    price: 380, // Calculated from 950/250g * 100
+    weight: "100g",
     image: "/long.png", 
     tag: "Premium Grade", 
     rating: "4.8/5",
@@ -55,8 +54,8 @@ const BEST_SELLING_WHOLE_SPICES = [
   { 
     id: 'star-anise', 
     name: "Badiyan-e-Khatai", 
-    price: 425, 
-    weight: "250g",
+    price: 170, // Calculated from 425/250g * 100
+    weight: "100g",
     image: "/star-anise.jpeg", 
     tag: "Aroma King", 
     rating: "5.0/5",
@@ -66,19 +65,18 @@ const BEST_SELLING_WHOLE_SPICES = [
   { 
     id: 'cinnamon', 
     name: "Dar Chini", 
-    price: 300, 
-    weight: "250g",
+    price: 120, // Calculated from 300/250g * 100
+    weight: "100g",
     image: "/dar-chini.jpeg", 
     tag: "Heritage Pick", 
     rating: "4.7/5",
     sold: "1.1k+ Sold",
     note: "Ceylon Origin"
   },
-  { id: 'garlic-powder', name: "Garlic Powder", price: 525, weight: "250g", image: "/garlic-powder.jpeg", tag: "Pure Essence", rating: "4.7/5", sold: "2.5k+ Sold", note: "No Clumping Tech" },
-  { id: 'ginger-powder', name: "Ginger Powder", price: 600, weight: "250g", image: "/ginger-powder.jpeg", tag: "Daily Essential", rating: "4.6/5", sold: "2.2k+ Sold", note: "Farm-Fresh Roots" },
-  { id: 'white-pepper', name: "Safed Mirch", price: 800, weight: "250g", image: "/safed-mirch.jpeg", tag: "Delicate", rating: "4.9/5", sold: "350+ Sold", note: "Gourmet Standard" },
+  { id: 'garlic-powder', name: "Garlic Powder", price: 210, weight: "100g", image: "/garlic-powder.jpeg", tag: "Pure Essence", rating: "4.7/5", sold: "2.5k+ Sold", note: "No Clumping Tech" },
+  { id: 'ginger-powder', name: "Ginger Powder", price: 240, weight: "100g", image: "/ginger-powder.jpeg", tag: "Daily Essential", rating: "4.6/5", sold: "2.2k+ Sold", note: "Farm-Fresh Roots" },
+  { id: 'white-pepper', name: "Safed Mirch", price: 320, weight: "100g", image: "/safed-mirch.jpeg", tag: "Delicate", rating: "4.9/5", sold: "350+ Sold", note: "Gourmet Standard" },
 ];
-
 
 const BestSellerPage = () => {
   return (
@@ -173,7 +171,6 @@ const BestSellerPage = () => {
                     <h3 className="text-4xl md:text-5xl font-serif tracking-tighter leading-none group-hover:text-orange-900 transition-colors">
                       {item.name}
                     </h3>
-                    {/* Updated Price & Weight Display */}
                     <div className="text-right">
                        <p className="text-2xl font-medium tracking-tighter opacity-80 leading-none">Rs.{item.price}</p>
                        <p className="text-[10px] font-bold uppercase tracking-widest text-orange-900/40 mt-1">{item.weight}</p>
