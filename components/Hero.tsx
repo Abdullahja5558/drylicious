@@ -42,8 +42,8 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-6xl md:text-[100px] font-serif text-[#1a1a1a] leading-[1] tracking-tighter mb-8"
         >
-          The Purest <br /> 
-          <span className="italic font-light text-orange-800/40">Aroma of Earth.</span>
+          Drylicious <br /> 
+          <span className="italic font-light text-orange-800/40">From farm to flowers</span>
         </motion.h1>
 
         {/* Description */}
