@@ -72,7 +72,7 @@ const PremiumNavbar = () => {
             whileTap={{ scale: 0.95 }}
             href={whatsappUrl}
             target="_blank"
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest transition-all duration-500 shadow-sm cursor-pointer ${
+            className={`flex items-center px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest transition-all duration-500 shadow-sm cursor-pointer ${
               isScrolled ? 'bg-[#111111] text-white' : 'bg-white text-[#111111]'
             }`}
           >
