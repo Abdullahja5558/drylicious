@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, MessageCircle, Truck, Package, ShieldCheck, PieChart, Info, Scale } from 'lucide-react';
 import Link from 'next/link';
-import PremiumNavbar from '@/components/Navbar';
+
 
 const WholesalePage = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const WholesalePage = () => {
 
   return (
     <div className="min-h-screen bg-[#FBF9F4] text-[#111111] selection:bg-orange-100">
-      <PremiumNavbar />
+    
       
       <nav className="fixed top-0 left-0 w-full z-[150] p-6 md:p-10 pointer-events-none">
         <Link href="/">
