@@ -68,9 +68,9 @@ const WholesalePage = () => {
                <div className="space-y-6">
                  {[
                    { label: "Premium Sample Tier", weight: "1kg - 5kg", discount: "Starter Price" },
-                   { label: "Micro-Wholesale", weight: "6kg - 20kg", discount: "15% Off" },
-                   { label: "Commercial Bulk", weight: "21kg - 100kg", discount: "25% Off" },
-                   { label: "Enterprise / Export", weight: "100kg+", discount: "Custom Quote" },
+                   { label: "Micro-Wholesale", weight: "6kg - 20kg", discount: "Premium Quality" },
+                   { label: "Commercial Bulk", weight: "21kg - 100kg", discount: "Lab tested" },
+                   
                  ].map((tier, i) => (
                    <div key={i} className="flex justify-between items-center border-b border-white/10 pb-4">
                      <div>
@@ -117,7 +117,7 @@ const WholesalePage = () => {
                     <option>6kg - 20kg (Micro-Wholesale)</option>
                     <option>21kg - 50kg (Commercial)</option>
                     <option>50kg - 100kg (Bulk)</option>
-                    <option>100kg+ (Export)</option>
+                    
                   </select>
                 </div>
                 
