@@ -24,7 +24,7 @@ export const PURE_SPICES = [
   },
   {
     id: 'black-pepper',
-    name: "Black Peppercorn",
+    name: "Black Pepper",
     price: 725,
     image: "/black-pepper.png",
     tag: "Bold Grade",
