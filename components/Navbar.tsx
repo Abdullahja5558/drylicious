@@ -2,19 +2,22 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion'; // useAnimation add kiya
-import { MessageCircle, Menu, X, Sparkles, ShoppingBag } from 'lucide-react';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { MessageCircle, Menu, X, Sparkles, ShoppingBag, Flame } from 'lucide-react'; // Flame icon add kiya
 import { useCart } from '@/context/CartContext';
 
 interface NavItem {
   name: string;
   href: string;
+  isSale?: boolean; // Sale check ke liye property
 }
 
 const navLinks: NavItem[] = [
   { name: 'Best Sellers', href: '/categories/best-sellers' },
   { name: 'Whole spices', href: '/categories/whole-spices' },
   { name: 'Pure Spices', href: '/categories/pure-spices' },
+  { name: 'Wholesale', href: '/wholesale' }, 
+  { name: 'Sale', href: '/sale', isSale: true }, // Sale option with flag
   { name: 'Our Story', href: '/about' },
 ];
 
@@ -22,20 +25,17 @@ const PremiumNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartCount } = useCart(); 
-  
-  // Animation Control for Cart Icon
   const controls = useAnimation();
 
   const phoneNumber = "923367999509";
   const premiumMessage = "As-salamu alaykum Drylicious! I've just seen your website and would love to experience your premium spices.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(premiumMessage)}`;
 
-  // Shake/Vibrate Logic: Jab cartCount barhay tab chalay
   useEffect(() => {
     if (cartCount > 0) {
       controls.start({
-        x: [0, -4, 4, -4, 4, 0], // Vibrate effect
-        scale: [1, 1.2, 1],      // Zoom effect
+        x: [0, -4, 4, -4, 4, 0],
+        scale: [1, 1.2, 1],
         transition: { duration: 0.4, ease: "easeInOut" }
       });
     }
@@ -63,7 +63,7 @@ const PremiumNavbar = () => {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className={`w-full max-w-6xl flex items-center justify-between px-4 md:px-8 py-3 rounded-full transition-all duration-700 pointer-events-auto relative z-[160] ${
+        className={`w-full max-w-7xl flex items-center justify-between px-4 md:px-8 py-3 rounded-full transition-all duration-700 pointer-events-auto relative z-[160] ${
           isScrolled 
           ? 'bg-white/80 backdrop-blur-xl border border-black/[0.05] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] text-black' 
           : 'bg-white/10 backdrop-blur-md border border-black/[0.03] py-4 md:py-5 text-black'
@@ -80,26 +80,38 @@ const PremiumNavbar = () => {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden lg:flex items-center gap-10">
+        <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
               href={link.href}
-              className="relative text-[10px] font-black uppercase tracking-[0.3em] transition-colors duration-500 group text-black/60 hover:text-black cursor-pointer"
+              className={`relative text-[9px] font-black uppercase tracking-[0.25em] transition-all duration-500 group cursor-pointer flex items-center gap-1.5
+                ${link.isSale ? 'text-red-600 hover:text-red-500' : 'text-black/60 hover:text-black'}`}
             >
               {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-orange-900/30 transition-all duration-500 group-hover:w-full" />
+              
+              {/* Hot Tag for Sale */}
+              {link.isSale && (
+                <motion.span 
+                  animate={{ scale: [1, 1.1, 1], opacity: [0.8, 1, 0.8] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  className="bg-red-600 text-white text-[7px] px-1.5 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm"
+                >
+                  <Flame size={8} fill="currentColor" />
+                  HOT
+                </motion.span>
+              )}
+              
+              <span className={`absolute -bottom-1 left-0 w-0 h-[1.5px] transition-all duration-500 group-hover:w-full ${link.isSale ? 'bg-red-600' : 'bg-orange-900/30'}`} />
             </Link>
           ))}
         </div>
 
         {/* Actions Container */}
         <div className="flex items-center gap-2 md:gap-4">
-          
-          {/* --- PREMIUM CART ICON (WITH VIBRATION) --- */}
           <Link href="/cart">
             <motion.div 
-              animate={controls} // Animation controls yahan connect hain
+              animate={controls}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="relative p-2.5 md:p-3 bg-black/[0.03] hover:bg-black/[0.06] border border-black/[0.05] rounded-full transition-colors cursor-pointer group"
@@ -120,7 +132,7 @@ const PremiumNavbar = () => {
             </motion.div>
           </Link>
 
-          {/* Order Button (WhatsApp) */}
+          {/* Order Button */}
           <motion.a
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.95 }}
@@ -147,7 +159,7 @@ const PremiumNavbar = () => {
         </div>
       </motion.nav>
 
-      {/* Full Screen Overlay (Mobile Menu) */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -157,21 +169,25 @@ const PremiumNavbar = () => {
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed inset-0 bg-white/95 backdrop-blur-2xl z-[140] flex flex-col items-center justify-center lg:hidden pointer-events-auto"
           >
-            <div className="flex flex-col gap-10 items-center text-center">
+            <div className="flex flex-col gap-8 items-center text-center">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.name}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: i * 0.1 }}
+                  className="flex items-center gap-3"
                 >
                   <Link 
                     href={link.href} 
-                    className="text-4xl font-serif tracking-tighter text-[#1a1a1a] hover:text-orange-900/40 transition-colors cursor-pointer"
+                    className={`text-4xl font-serif tracking-tighter transition-colors cursor-pointer ${link.isSale ? 'text-red-600' : 'text-[#1a1a1a] hover:text-orange-900/40'}`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.name}
                   </Link>
+                  {link.isSale && (
+                    <span className="bg-red-600 text-white text-[10px] px-3 py-1 rounded-full font-black animate-pulse">HOT</span>
+                  )}
                 </motion.div>
               ))}
               
