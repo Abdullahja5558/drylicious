@@ -27,6 +27,10 @@ export const metadata: Metadata = {
     "Drylicious brings you 100% pure, unadulterated whole spices and premium ghar kay masalay in Pakistan. Fresh, organic, and hand-picked spices delivered to your home.",
 
   keywords: [
+    "Drylicious Global Foods",
+    "Whole Spices",
+    "Ghar Kay Masalay",
+    "Organic Spices",
     "Drylicious",
     "Ghar Kay Masalay",
     "Whole Spices Pakistan",
