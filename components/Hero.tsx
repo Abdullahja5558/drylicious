@@ -1,14 +1,14 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link'; // Next.js Link for navigation
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { MessageCircle, ArrowDown, Sparkles } from 'lucide-react';
 
 const Hero = () => {
   // --- WhatsApp Logic ---
   const phoneNumber = "923367999509";
-  const premiumMessage = "As-salamu alaykum Drylicious!  I'm exploring your hero collection and would like to place an order or see your full menu.";
+  const premiumMessage = "As-salamu alaykum Drylicious! I'm exploring your hero collection and would like to place an order or see your full menu.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(premiumMessage)}`;
 
   return (
@@ -20,7 +20,7 @@ const Hero = () => {
       </div>
 
       {/* Main Content Container */}
-      <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+      <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center">
         
         {/* Top Badge */}
         <motion.div
@@ -35,15 +35,17 @@ const Hero = () => {
           </span>
         </motion.div>
 
-        {/* Hero Title */}
+        {/* Hero Title - Adjusted for Laptop and Mobile sizes */}
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-6xl md:text-[100px] font-serif text-[#1a1a1a] leading-[1] tracking-tighter mb-8"
+          className="text-6xl md:text-8xl lg:text-[110px] font-serif text-[#1a1a1a] leading-[1.1] md:leading-[1] tracking-tighter mb-8"
         >
-          Drylicious <br /> 
-          <span className="italic font-light text-orange-800/40">From farm to flowers</span>
+          Drylicious{" "}
+          <span className="italic font-light text-orange-800/40 whitespace-nowrap block md:inline text-4xl md:text-6xl lg:text-[90px]">
+            From farm to flowers
+          </span>
         </motion.h1>
 
         {/* Description */}
@@ -63,14 +65,12 @@ const Hero = () => {
           transition={{ delay: 0.6 }}
           className="flex flex-col sm:flex-row items-center gap-5"
         >
-          {/* Collection Button with Link */}
           <Link href="/#collection" className="w-full sm:w-auto">
             <button className="w-full px-10 py-5 bg-[#1a1a1a] text-white rounded-full font-bold hover:bg-orange-900 transition-all duration-500 shadow-2xl flex items-center justify-center gap-2 group cursor-pointer">
               Explore Collection
             </button>
           </Link>
           
-          {/* WhatsApp Button with Number & Premium Text */}
           <a 
             href={whatsappUrl}
             target="_blank"
@@ -98,7 +98,6 @@ const Hero = () => {
             <div className="absolute inset-0 bg-black/5" />
           </div>
 
-          {/* Floating Element */}
           <div className="absolute -bottom-6 -right-6 md:right-12 p-6 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-orange-100 hidden md:block">
             <p className="text-[#1a1a1a] font-bold text-sm">Aromatic Guarantee</p>
             <p className="text-gray-400 text-xs italic">Vacuum sealed for freshness.</p>
