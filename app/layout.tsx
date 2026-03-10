@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://drylicious.vercel.app"),
 
   title: {
-    default: "Drylicious | Ghar Kay Masalay",
+    default: "Drylicious Global Foods | Ghar Kay Masalay",
     template: "%s | Drylicious",
   },
 
