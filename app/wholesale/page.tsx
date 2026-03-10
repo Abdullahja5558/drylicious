@@ -2,25 +2,24 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, MessageCircle, Truck, Package, ShieldCheck, PieChart, Info, Scale } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Truck, Package, ShieldCheck, PieChart, Scale } from 'lucide-react';
 import Link from 'next/link';
-
 
 const WholesalePage = () => {
   const [formData, setFormData] = useState({
     name: '',
     business: '',
     item: 'Whole Spices Mix',
-    requirement: '1kg - 5kg' // Updated Default
+    requirement: '5' // Default as a number string
   });
 
+  // Dynamic WhatsApp link using the custom weight input
   const whatsappUrl = `https://wa.me/923367999509?text=${encodeURIComponent(
-    `Asalam-o-Alaikum Drylicious Wholesale! 📦\n\nBusiness Inquiry:\nName: ${formData.name}\nBusiness: ${formData.business}\nInterest: ${formData.item}\nVolume: ${formData.requirement}\n\nPlease share the bulk price list for these tiers.`
+    `Asalam-o-Alaikum Drylicious Wholesale! 📦\n\nBusiness Inquiry:\nName: ${formData.name}\nBusiness: ${formData.business}\nInterest: ${formData.item}\nVolume: ${formData.requirement}kg\n\nPlease share the bulk price list for this weight.`
   )}`;
 
   return (
     <div className="min-h-screen bg-[#FBF9F4] text-[#111111] selection:bg-orange-100">
-    
       
       <nav className="fixed top-0 left-0 w-full z-[150] p-6 md:p-10 pointer-events-none">
         <Link href="/">
@@ -62,7 +61,7 @@ const WholesalePage = () => {
               ))}
             </div>
 
-            {/* UPDATED VOLUME TIERS */}
+            {/* VOLUME TIERS PREVIEW */}
             <div className="bg-[#111111] text-white p-8 md:p-12 rounded-[50px] shadow-2xl relative">
                <h3 className="text-3xl font-serif mb-8 italic text-orange-400">Wholesale Volume Tiers</h3>
                <div className="space-y-6">
@@ -70,7 +69,6 @@ const WholesalePage = () => {
                    { label: "Premium Sample Tier", weight: "1kg - 5kg", discount: "Starter Price" },
                    { label: "Micro-Wholesale", weight: "6kg - 20kg", discount: "Premium Quality" },
                    { label: "Commercial Bulk", weight: "21kg - 100kg", discount: "Lab tested" },
-                   
                  ].map((tier, i) => (
                    <div key={i} className="flex justify-between items-center border-b border-white/10 pb-4">
                      <div>
@@ -107,18 +105,21 @@ const WholesalePage = () => {
                     className="w-full bg-[#FBF9F4] border-none rounded-2xl px-6 py-4 outline-none focus:ring-1 ring-orange-900/20"
                   />
                 </div>
+                
+                {/* PREMIUM NUMBER INPUT FOR WEIGHT */}
                 <div>
-                  <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-4 mb-2 block">Expected Order Volume</label>
-                  <select 
-                    onChange={(e) => setFormData({...formData, requirement: e.target.value})}
-                    className="w-full bg-[#FBF9F4] border-none rounded-2xl px-6 py-4 outline-none appearance-none font-bold"
-                  >
-                    <option>1kg - 5kg (Sample/Trial)</option>
-                    <option>6kg - 20kg (Micro-Wholesale)</option>
-                    <option>21kg - 50kg (Commercial)</option>
-                    <option>50kg - 100kg (Bulk)</option>
-                    
-                  </select>
+                  <label className="text-[9px] font-black uppercase tracking-widest text-stone-400 ml-4 mb-2 block">Expected Order Weight (kg)</label>
+                  <div className="relative flex items-center">
+                    <input 
+                      type="number" 
+                      min="1"
+                      value={formData.requirement}
+                      onChange={(e) => setFormData({...formData, requirement: e.target.value})}
+                      placeholder="5" 
+                      className="w-full bg-[#FBF9F4] border-none rounded-2xl px-6 py-4 outline-none focus:ring-1 ring-orange-900/20 font-bold text-2xl"
+                    />
+                    <span className="absolute right-6 text-orange-900/40 font-black uppercase tracking-widest text-xs pointer-events-none">Kilograms</span>
+                  </div>
                 </div>
                 
                 <a 

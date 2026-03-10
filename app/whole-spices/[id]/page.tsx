@@ -12,16 +12,15 @@ const WholeSpiceDetail = () => {
   const { id } = useParams();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-  const [selectedWeight, setSelectedWeight] = useState(100); // Default 100g
+  const [selectedWeight, setSelectedWeight] = useState(100); 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { addToCart } = useCart();
 
   const spice = WHOLE_SPICES.find(s => s.id === id);
 
-  // --- DYNAMIC PRICE LOGIC ---
   const currentUnitPrice = useMemo(() => {
     if (!spice) return 0;
-    const basePrice = spice.price; // Price for 100g
+    const basePrice = spice.price; 
     if (selectedWeight === 50) return Math.round(basePrice * 0.55);
     if (selectedWeight === 250) return Math.round(basePrice * 2.5);
     return basePrice;
@@ -60,19 +59,20 @@ const WholeSpiceDetail = () => {
     <div className="min-h-screen bg-[#FBF9F4] text-[#111111] selection:bg-orange-100">
       <PremiumNavbar/>
       
-      <nav className="fixed top-0 left-0 w-full z-[100] p-4 md:p-10 pointer-events-none">
+      {/* --- FIXED BACK BUTTON (Z-Index & Position Fix) --- */}
+      <nav className="fixed top-0 left-0 w-full z-[200] p-6 md:p-10 pointer-events-none">
         <motion.button 
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           onClick={() => router.back()}
-          className="pointer-events-auto flex items-center gap-2 md:gap-3 px-4 py-2.5 md:px-6 md:py-3 bg-white/80 backdrop-blur-2xl border border-black/[0.03] rounded-full shadow-lg hover:shadow-xl transition-all group"
+          className="pointer-events-auto mt-20 md:mt-0 flex items-center gap-2 md:gap-3 px-5 py-3 bg-white/90 backdrop-blur-2xl border border-black/[0.05] rounded-full shadow-2xl hover:shadow-orange-900/10 transition-all group"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em]">Go Back</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Go Back</span>
         </motion.button>
       </nav>
 
-      <main className="max-w-[1400px] mx-auto px-4 sm:px-8 md:px-12 pt-24 md:pt-40 pb-32 lg:pb-20">
+      <main className="max-w-[1400px] mx-auto px-6 pt-48 md:pt-40 pb-32 lg:pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 lg:gap-24 items-start">
           
           {/* LEFT: IMAGE */}
@@ -80,12 +80,12 @@ const WholeSpiceDetail = () => {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative aspect-[4/5] rounded-[30px] md:rounded-[60px] overflow-hidden shadow-2xl group bg-stone-100"
+              className="relative aspect-[4/5] rounded-[40px] md:rounded-[60px] overflow-hidden shadow-2xl group bg-stone-100"
             >
               <motion.img src={spice.image} alt={spice.name} className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-[3s] ease-out" />
-              <div className="absolute top-5 right-5 md:top-8 md:right-8 bg-white/20 backdrop-blur-xl border border-white/30 rounded-xl p-3 flex flex-col items-center shadow-2xl">
+              <div className="absolute top-8 right-8 bg-white/20 backdrop-blur-xl border border-white/30 rounded-xl p-3 flex flex-col items-center shadow-2xl">
                  <Star size={14} className="text-white fill-white mb-1 animate-pulse" />
-                 <span className="text-[7px] md:text-[8px] font-black text-white uppercase tracking-tighter italic">Origin Pure</span>
+                 <span className="text-[8px] font-black text-white uppercase tracking-tighter italic">Origin Pure</span>
               </div>
             </motion.div>
           </div>
@@ -95,28 +95,27 @@ const WholeSpiceDetail = () => {
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 md:space-y-12">
               <header className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-[1.5px] w-8 md:w-10 bg-orange-900/30" />
-                  <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.5em] text-orange-900/50">Raw Whole Spices</span>
+                  <div className="h-[1.5px] w-10 bg-orange-900/30" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.5em] text-orange-900/50">Raw Whole Spices</span>
                 </div>
                 
-                <h1 className="text-4xl md:text-7xl font-serif leading-[1.1] md:leading-[0.85] tracking-tighter text-[#111111]">
+                <h1 className="text-5xl md:text-7xl font-serif leading-[0.85] tracking-tighter text-[#111111]">
                   {spice.name.split(' ')[0]} <br />
                   <span className="italic font-light text-orange-900/30">{spice.name.split(' ').slice(1).join(' ')}</span>
                 </h1>
                 
-                <div className="flex items-center gap-6 md:gap-10 pt-2">
+                <div className="flex items-center gap-10 pt-2">
                   <div className="flex flex-col">
-                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Total Value</span>
-                    <p className="text-3xl md:text-5xl font-medium tracking-tighter">Rs. {totalPrice}</p>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Total Value</span>
+                    <p className="text-4xl md:text-5xl font-medium tracking-tighter tabular-nums">Rs. {totalPrice}</p>
                   </div>
                   <div className="h-10 w-px bg-black/5" />
                   
-                  {/* --- WEIGHT DROPDOWN --- */}
                   <div className="relative">
-                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 block">Pouch Size</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 block">Pouch Size</span>
                     <button 
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="flex items-center gap-2 text-lg md:text-xl font-serif italic text-orange-900/60 leading-none group cursor-pointer"
+                      className="flex items-center gap-2 text-xl font-serif italic text-orange-900/60 leading-none group cursor-pointer"
                     >
                       {selectedWeight} Grams
                       <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
@@ -146,21 +145,19 @@ const WholeSpiceDetail = () => {
                 </div>
               </header>
 
-              <p className="text-base md:text-xl lg:text-2xl text-[#333333] font-light leading-relaxed italic border-l-2 border-orange-900/10 pl-5 md:pl-8">
+              <p className="text-xl md:text-2xl text-[#333333] font-light leading-relaxed italic border-l-2 border-orange-900/10 pl-8">
                 "Our {spice.name} is selected for its high essential oil content, ensuring maximum potency in every {selectedWeight}g pack."
               </p>
 
-              {/* Quantity Section */}
               <div className="space-y-4">
-                <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Specify Quantity</span>
-                <div className="flex items-center bg-white border border-black/5 rounded-full p-1.5 md:p-2 w-fit shadow-sm">
-                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:bg-orange-50 cursor-pointer transition-colors"><Minus size={18} className="text-gray-400" /></button>
-                  <span className="w-12 md:w-20 text-center font-bold text-2xl md:text-4xl tabular-nums tracking-tighter">{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:bg-orange-50 cursor-pointer transition-colors"><Plus size={18} /></button>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Specify Quantity</span>
+                <div className="flex items-center bg-white border border-black/5 rounded-full p-2 w-fit shadow-sm">
+                  <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-14 h-14 rounded-full flex items-center justify-center hover:bg-orange-50 cursor-pointer transition-colors"><Minus size={18} className="text-gray-400" /></button>
+                  <span className="w-20 text-center font-bold text-4xl tabular-nums tracking-tighter">{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)} className="w-14 h-14 rounded-full flex items-center justify-center hover:bg-orange-50 cursor-pointer transition-colors"><Plus size={18} /></button>
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="hidden lg:grid grid-cols-2 gap-4 pt-4">
                 <motion.button onClick={handleAddToCart} whileHover={{ y: -5 }} className="flex items-center justify-center gap-3 py-6 bg-white border border-black/10 rounded-[25px] hover:bg-black hover:text-white transition-all duration-500 cursor-pointer">
                   <ShoppingBag size={20} /><span className="text-[11px] font-black uppercase tracking-widest">Add to Basket</span>
@@ -170,15 +167,14 @@ const WholeSpiceDetail = () => {
                 </motion.a>
               </div>
 
-              {/* Trust Indicators */}
-              <div className="grid grid-cols-2 gap-4 md:gap-8 pt-8 md:pt-12 border-t border-black/[0.05]">
-                <div className="flex items-center gap-3 md:gap-4">
-                  <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 rounded-xl bg-white border border-black/5 flex items-center justify-center shadow-sm text-emerald-600"><ShieldCheck size={18} /></div>
-                  <div className="flex flex-col"><span className="text-[8px] md:text-[9px] font-black uppercase">Lab Certified</span><span className="text-[8px] text-gray-400 uppercase font-bold">100% Purity</span></div>
+              <div className="grid grid-cols-2 gap-8 pt-12 border-t border-black/[0.05]">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-white border border-black/5 flex items-center justify-center shadow-sm text-emerald-600"><ShieldCheck size={18} /></div>
+                  <div className="flex flex-col"><span className="text-[9px] font-black uppercase">Lab Certified</span><span className="text-[8px] text-gray-400 uppercase font-bold">100% Purity</span></div>
                 </div>
-                <div className="flex items-center gap-3 md:gap-4">
-                  <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 rounded-xl bg-white border border-black/5 flex items-center justify-center shadow-sm text-orange-600"><Zap size={18} /></div>
-                  <div className="flex flex-col"><span className="text-[8px] md:text-[9px] font-black uppercase">High Potency</span><span className="text-[8px] text-gray-400 uppercase font-bold">Fresh Batch</span></div>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 shrink-0 rounded-xl bg-white border border-black/5 flex items-center justify-center shadow-sm text-orange-600"><Zap size={18} /></div>
+                  <div className="flex flex-col"><span className="text-[9px] font-black uppercase">High Potency</span><span className="text-[8px] text-gray-400 uppercase font-bold">Fresh Batch</span></div>
                 </div>
               </div>
             </motion.div>
