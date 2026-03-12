@@ -6,17 +6,22 @@ import Features from './Feature'
 import FacebookGallery from './FacebookGallery'
 import Testimonials from './Testimonials'
 import Footer from './Footer'
+import FAQSection from './FAQSection'
+import TrustedSection from './TrustedSection'
 
 const Home = () => {
   return (
     <>
     <PremiumNavbar/>
     <Hero/>
+    <TrustedSection/>
     <Categories/>
     <Features/>
     <FacebookGallery/>
+    <FAQSection/>
     <Testimonials/>
     <Footer/>
+    
     </>
   )
 }
