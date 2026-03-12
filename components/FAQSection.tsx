@@ -67,17 +67,17 @@ const FAQSection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`rounded-3xl border transition-all duration-500 overflow-hidden ${
+              className={`rounded-3xl border transition-all duration-500 overflow-hidden cursor-pointer ${
                 activeId === index 
-                ? 'bg-white border-[#D7BDB1]/20 shadow-[0_20px_40px_-15px_rgba(124,45,18,0.05)]' 
-                : 'bg-black/[0.02] border-black/[0.05] hover:border-black/[0.1]'
+                ? 'bg-white border-[#D7BDB1]/20 shadow-[0_20px_40px_-15px_rgba(124,45,18,0.05)] cursor-pointer' 
+                : 'bg-black/[0.02] border-black/[0.05] hover:border-black/[0.1] cursor-pointer'
               }`}
             >
               <button
                 onClick={() => setActiveId(activeId === index ? null : index)}
-                className="w-full px-6 md:px-8 py-7 flex items-center justify-between text-left focus:outline-none group"
+                className="w-full px-6 md:px-8 py-7 flex items-center justify-between text-left focus:outline-none group cursor-pointer"
               >
-                <span className={`text-lg md:text-xl font-medium tracking-tight transition-colors duration-300 ${activeId === index ? 'text-[#D7BDB1]' : 'text-[#1a1a1a]'}`}>
+                <span className={`text-lg md:text-xl font-medium tracking-tight transition-colors duration-300 cursor-pointer ${activeId === index ? 'text-[#D7BDB1]' : 'text-[#1a1a1a]'}`}>
                   {faq.question}
                 </span>
                 <div className={`p-2 rounded-full transition-all duration-500 ${activeId === index ? 'bg-[#D7BDB1] text-white rotate-180' : 'bg-black/[0.05] text-[#1a1a1a]'}`}>
