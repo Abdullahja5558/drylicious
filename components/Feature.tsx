@@ -131,7 +131,7 @@ const Features = () => {
             <div className="absolute bottom-10 left-10 right-10 flex justify-between items-end">
                 <div className="hidden md:block">
                     <p className="text-[10px] font-black uppercase tracking-[0.5em] text-orange-950 mb-2">Heritage</p>
-                    <h4 className="text-xl font-serif text-orange-950/80">Stone Grounded Excellence</h4>
+                    <h4 className="text-xl font-serif text-orange-950/80"> Grounded Excellence</h4>
                 </div>
                 <div className="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white">
                     <span className="text-3xl font-serif text-[#1a1a1a]">01 / 03</span>
