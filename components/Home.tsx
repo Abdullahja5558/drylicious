@@ -8,6 +8,7 @@ import Testimonials from './Testimonials'
 import Footer from './Footer'
 import FAQSection from './FAQSection'
 import TrustedSection from './TrustedSection'
+import OriginMap from './OriginMap'
 
 const Home = () => {
   return (
@@ -16,10 +17,12 @@ const Home = () => {
     <Hero/>
     <TrustedSection/>
     <Categories/>
+    <OriginMap/>
     <Features/>
     <FacebookGallery/>
     <FAQSection/>
     <Testimonials/>
+    
     <Footer/>
     
     </>
