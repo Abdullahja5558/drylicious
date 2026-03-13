@@ -26,6 +26,7 @@ const categories = [
     theme: "text-amber-900/80",
     border: "border-amber-100"
   },
+  
   {
     title: "Whole Spices",
     subtitle: "The Raw Harvest",
