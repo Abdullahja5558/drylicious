@@ -177,7 +177,7 @@ const SocialGallery = () => {
                   </div>
                 ))}
              </div>
-             <p className="text-xs font-medium text-gray-500 tracking-wide">Join <span className="text-orange-900 font-bold">12k+ others</span> on our digital journey</p>
+             <p className="text-xs font-medium text-gray-500 tracking-wide">Join <span className="text-orange-900 font-bold">120k+ others</span> on our digital journey</p>
           </div>
           <a 
             href="https://wa.me/923367999509" 
