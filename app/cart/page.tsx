@@ -15,13 +15,18 @@ const CartPage = () => {
   const delivery = subtotal > 0 ? 250 : 0; 
   const total = subtotal + delivery;
 
+  // --- UNIQUE WHATSAPP MESSAGE LOGIC ---
   const generateWhatsAppOrder = () => {
     const phoneNumber = "923367999509";
-    const orderDetails = cart.map(item => 
-      `• ${item.name} (${item.weight}) x ${item.qty} = Rs. ${item.price * item.qty}`
-    ).join('\n');
     
-    const message = `Asalam-o-Alaikum Drylicious! 👋\n\nI would like to place an order:\n\n${orderDetails}\n\n--- Order Summary ---\nSubtotal: Rs. ${subtotal}\nDelivery: Rs. ${delivery}\nTotal: Rs. ${total}\n\nPlease confirm my order.`;
+    // Har item ke liye clean format
+    const orderDetails = cart.map((item, index) => 
+      `${index + 1}. *${item.name}* ⚖️ Size: ${item.weight}
+      🔢 Qty: ${item.qty}
+      💰 Price: Rs. ${item.price * item.qty}`
+    ).join('\n\n');
+    
+    const message = `Asalam-o-Alaikum Drylicious! 👋✨\n\nI want to place a *New Order*:\n\n${orderDetails}\n\n--- 💳 *Billing Summary* ---\n📝 Subtotal: Rs. ${subtotal}\n🚚 Delivery: Rs. ${delivery}\n⭐ *Grand Total: Rs. ${total}*\n\nPlease confirm my order. Thank you!`;
     
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
@@ -46,19 +51,31 @@ const CartPage = () => {
   return (
     <div className="min-h-screen bg-[#FBF9F4] text-[#111111] selection:bg-orange-100 pb-20">
       
-      {/* Top Bar Navigation */}
-      <nav className="p-6 md:p-12 flex justify-between items-center border-b border-black/[0.03]">
-        <button onClick={() => router.back()} className="flex items-center gap-3 group">
-          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Back to Store</span>
-        </button>
-        <div className="flex items-center gap-2 text-orange-900/40">
-           <Sparkles size={14} />
-           <span className="text-[10px] font-black uppercase tracking-[0.5em]">Drylicious Checkout</span>
+      {/* --- RESPONSIVE BACK BUTTON (Consistent with Detail Pages) --- */}
+      <nav className="fixed top-0 left-0 w-full z-[400] pointer-events-none">
+        <div className="max-w-[1600px] mx-auto p-6 md:p-12 flex justify-between items-center">
+          <motion.button 
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.1, backgroundColor: "#000", color: "#fff" }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => router.back()}
+            className="pointer-events-auto flex items-center justify-center gap-3 bg-white border border-black/5 shadow-2xl transition-all duration-300 group cursor-pointer
+                       px-6 py-2.5 rounded-full
+                       md:px-0 md:py-0 md:w-16 md:h-16 md:rounded-full"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] md:hidden">Back to Store</span>
+          </motion.button>
+
+          <div className="flex items-center gap-2 text-orange-900/40">
+             <Sparkles size={14} />
+             <span className="text-[10px] font-black uppercase tracking-[0.5em]">Drylicious Checkout</span>
+          </div>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 pt-16">
+      <main className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 pt-32 md:pt-40">
         
         {/* Left: Items List */}
         <div className="lg:col-span-8">
@@ -87,7 +104,7 @@ const CartPage = () => {
 
                   {/* Product Details */}
                   <div className="flex-grow text-center md:text-left">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-orange-900/40 mb-2 block tracking-[0.3em]">Heritage Pouch • {item.weight}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-orange-900/40 mb-2 block tracking-[0.3em]">Heritage Selection • {item.weight}</span>
                     <h3 className="text-3xl md:text-4xl font-serif tracking-tight mb-6">{item.name}</h3>
                     
                     {/* Quantity Selector */}
@@ -120,11 +137,11 @@ const CartPage = () => {
               <h4 className="text-[10px] font-black uppercase tracking-[0.5em] mb-12 text-orange-900/40 border-b border-black/5 pb-6">Checkout Archive</h4>
               
               <div className="space-y-6 mb-12">
-                <div className="flex justify-between text-sm">
+                <div className="justify-between flex text-sm">
                   <span className="text-gray-400 font-light italic">Order Subtotal</span>
                   <span className="font-medium tracking-tighter">Rs. {subtotal}</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="justify-between flex text-sm">
                   <span className="text-gray-400 font-light italic">Flat Delivery Fee</span>
                   <span className="font-medium tracking-tighter text-orange-900">Rs. {delivery}</span>
                 </div>
@@ -160,18 +177,18 @@ const CartPage = () => {
 
       </main>
 
-       <section className="mt-30 border-y border-black/[0.03] flex flex-col items-center text-center">
-                  <Medal className="text-orange-900/20 mb-10 w-20 h-20" />
-                  <h4 className="text-5xl md:text-8xl font-serif tracking-tighter mb-8 max-w-4xl leading-[0.85]">
-                   Ready to cook?<br />
-                    <span className="italic text-orange-900/30"> Let's get these to your doorstep</span>
-                  </h4>
-                  <div className="flex items-center gap-4 mt-10">
-                     <div className="h-px w-20 bg-orange-900/20" />
-                     <Sparkles className="text-orange-900/40" />
-                     <div className="h-px w-20 bg-orange-900/20" />
-                  </div>
-              </section>
+       <section className="mt-30 border-y border-black/[0.03] flex flex-col items-center text-center py-20">
+          <Medal className="text-orange-900/20 mb-10 w-20 h-20" />
+          <h4 className="text-5xl md:text-8xl font-serif tracking-tighter mb-8 max-w-4xl leading-[0.85]">
+            Ready to cook?<br />
+             <span className="italic text-orange-900/30"> Let's get these to your doorstep</span>
+          </h4>
+          <div className="flex items-center gap-4 mt-10">
+             <div className="h-px w-20 bg-orange-900/20" />
+             <Sparkles className="text-orange-900/40" />
+             <div className="h-px w-20 bg-orange-900/20" />
+          </div>
+       </section>
     </div>
   );
 };
