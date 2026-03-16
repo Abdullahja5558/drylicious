@@ -51,30 +51,43 @@ const SpiceDetail = () => {
 
   return (
     <div className="min-h-screen bg-[#FBF9F4] text-[#1a1a1a] selection:bg-orange-100">
-      <PremiumNavbar/>
+      {/* NAVBAR */}
+      <div className="relative z-[300]">
+        <PremiumNavbar />
+      </div>
       
-      {/* --- FIXED BACK BUTTON (Z-Index & Position Fix) --- */}
-      <nav className="fixed top-0 left-0 w-full z-[200] p-6 md:p-10 pointer-events-none">
-        <motion.button 
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          onClick={() => router.back()}
-          className="pointer-events-auto mt-20 md:mt-0 flex items-center gap-3 px-6 py-3 bg-white/90 backdrop-blur-2xl border border-black/5 rounded-full shadow-xl hover:shadow-orange-900/10 transition-all group cursor-pointer"
-        >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Back</span>
-        </motion.button>
+      {/* --- RESPONSIVE BACK BUTTON --- */}
+      <nav className="fixed top-0 left-0 w-full z-[400] pointer-events-none">
+        <div className="max-w-[1600px] mx-auto p-6 md:p-10">
+          <motion.button 
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.1, backgroundColor: "#000", color: "#fff" }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => router.back()}
+            /* Mobile: mt-28 (Navbar se thora aur niche)
+               Laptop: md:mt-10 (Top corner - No change)
+            */
+            className="pointer-events-auto mt-15 md:mt-1 flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-white border border-black/5 rounded-full shadow-2xl transition-all duration-300 group cursor-pointer"
+          >
+            <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
+          </motion.button>
+        </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-6 pt-48 md:pt-40 pb-32">
+      <main className="max-w-7xl mx-auto px-6 pt-44 md:pt-48 pb-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           
           {/* Left: Image Section */}
-          <div className="relative lg:sticky lg:top-32 w-full">
-            <motion.div className="relative aspect-[4/5] rounded-[40px] md:rounded-[50px] overflow-hidden shadow-2xl group">
+          <div className="relative lg:sticky lg:top-36 w-full">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative aspect-[4/5] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-2xl group"
+            >
               <img src={spice.image} alt={spice.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3s]" />
-              <div className="absolute top-8 right-8 bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl p-4 flex flex-col items-center">
-                 <Star size={14} className="text-white fill-white mb-1" />
+              <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl p-4 flex flex-col items-center">
+                 <Star size={14} className="text-white fill-white mb-1 animate-pulse" />
                  <span className="text-[8px] font-black text-white uppercase tracking-tighter italic">Premium</span>
               </div>
             </motion.div>
@@ -140,9 +153,9 @@ const SpiceDetail = () => {
             <div className="space-y-4">
               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Select Quantity</span>
               <div className="flex items-center border border-black/5 rounded-full p-2 bg-white shadow-sm w-fit">
-                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-14 h-14 rounded-full flex items-center justify-center hover:bg-orange-50 cursor-pointer"><Minus size={16}/></button>
+                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-14 h-14 rounded-full flex items-center justify-center hover:bg-orange-50 cursor-pointer transition-colors"><Minus size={16}/></button>
                 <span className="w-20 text-center font-bold text-4xl tabular-nums tracking-tighter">{quantity}</span>
-                <button onClick={() => setQuantity(quantity + 1)} className="w-14 h-14 rounded-full flex items-center justify-center hover:bg-orange-50 cursor-pointer"><Plus size={16}/></button>
+                <button onClick={() => setQuantity(quantity + 1)} className="w-14 h-14 rounded-full flex items-center justify-center hover:bg-orange-50 cursor-pointer transition-colors"><Plus size={16}/></button>
               </div>
             </div>
 
@@ -172,7 +185,7 @@ const SpiceDetail = () => {
       </main>
 
       {/* Mobile Footer */}
-      <div className="lg:hidden fixed bottom-0 left-0 w-full p-4 z-[110] flex gap-2 bg-gradient-to-t from-[#FBF9F4] to-transparent">
+      <div className="lg:hidden fixed bottom-0 left-0 w-full p-4 z-[110] flex gap-2 bg-gradient-to-t from-[#FBF9F4] via-[#FBF9F4] to-transparent">
         <button onClick={handleAddToCart} className="flex-none p-5 bg-white border border-black/10 rounded-[20px] shadow-xl active:scale-95 transition-transform"><ShoppingBag size={22} /></button>
         <a href={whatsappUrl} target="_blank" className="flex-grow flex items-center justify-between px-6 py-5 bg-[#111111] text-white rounded-[20px] shadow-2xl active:scale-95 transition-transform">
           <div className="flex flex-col text-left">

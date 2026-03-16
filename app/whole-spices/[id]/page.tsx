@@ -57,33 +57,45 @@ const WholeSpiceDetail = () => {
 
   return (
     <div className="min-h-screen bg-[#FBF9F4] text-[#111111] selection:bg-orange-100">
-      <PremiumNavbar/>
+      {/* NAVBAR WITH HIGHER Z-INDEX */}
+      <div className="relative z-[300]">
+        <PremiumNavbar />
+      </div>
       
-      {/* --- FIXED BACK BUTTON (Z-Index & Position Fix) --- */}
-      <nav className="fixed top-0 left-0 w-full z-[200] p-6 md:p-10 pointer-events-none">
-        <motion.button 
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          onClick={() => router.back()}
-          className="pointer-events-auto mt-20 md:mt-0 flex items-center gap-2 md:gap-3 px-5 py-3 bg-white/90 backdrop-blur-2xl border border-black/[0.05] rounded-full shadow-2xl hover:shadow-orange-900/10 transition-all group"
-        >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Go Back</span>
-        </motion.button>
+      {/* --- RESPONSIVE BACK BUTTON --- */}
+      <nav className="fixed top-0 left-0 w-full z-[400] pointer-events-none">
+        <div className="max-w-[1600px] mx-auto p-6 md:p-10">
+          <motion.button 
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.1, backgroundColor: "#000", color: "#fff" }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => router.back()}
+            /* Mobile: mt-28 (Navbar ke niche), Pill shape (rounded-full px-6)
+               Laptop: md:mt-10 (Top corner), Ball shape (md:w-16 md:h-16 md:px-0)
+            */
+            className="pointer-events-auto mt-15 md:mt-1 flex items-center justify-center gap-3 bg-white border border-black/5 shadow-2xl transition-all duration-300 group cursor-pointer
+                       px-6 py-2.5 rounded-full
+                       md:px-0 md:py-0 md:w-16 md:h-16 md:rounded-full"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] md:hidden">Go Back</span>
+          </motion.button>
+        </div>
       </nav>
 
-      <main className="max-w-[1400px] mx-auto px-6 pt-48 md:pt-40 pb-32 lg:pb-20">
+      <main className="max-w-[1400px] mx-auto px-6 pt-44 md:pt-48 pb-32 lg:pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 lg:gap-24 items-start">
           
           {/* LEFT: IMAGE */}
-          <div className="lg:col-span-7 lg:sticky lg:top-32">
+          <div className="lg:col-span-7 lg:sticky lg:top-36">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative aspect-[4/5] rounded-[40px] md:rounded-[60px] overflow-hidden shadow-2xl group bg-stone-100"
+              className="relative aspect-[4/5] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-2xl group bg-stone-100"
             >
               <motion.img src={spice.image} alt={spice.name} className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-[3s] ease-out" />
-              <div className="absolute top-8 right-8 bg-white/20 backdrop-blur-xl border border-white/30 rounded-xl p-3 flex flex-col items-center shadow-2xl">
+              <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-xl border border-white/30 rounded-xl p-3 flex flex-col items-center shadow-2xl">
                  <Star size={14} className="text-white fill-white mb-1 animate-pulse" />
                  <span className="text-[8px] font-black text-white uppercase tracking-tighter italic">Origin Pure</span>
               </div>

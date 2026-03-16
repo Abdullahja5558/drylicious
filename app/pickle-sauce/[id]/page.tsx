@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, MessageCircle, Minus, Plus, ShieldCheck, Zap, Star, ChevronDown, ShoppingBag, Droplet, Leaf } from 'lucide-react';
-import { PICKLE_PRODUCTS } from '@/app/categories/pickles-sauces/page'; // Ensure this path is correct
+import { PICKLE_PRODUCTS } from '@/app/categories/pickles-sauces/page'; 
 import { useCart } from '@/context/CartContext';
 import PremiumNavbar from '@/components/Navbar';
 
@@ -12,13 +12,12 @@ const PickleDetail = () => {
   const { id } = useParams();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-  const [selectedWeight, setSelectedWeight] = useState(500); // Default weight for pickles
+  const [selectedWeight, setSelectedWeight] = useState(500); 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { addToCart } = useCart();
 
   const product = PICKLE_PRODUCTS.find(p => p.id === id);
 
-  // Price Logic based on your pickle weight variations
   const currentUnitPrice = useMemo(() => {
     if (!product) return 0;
     const basePrice = product.weights.find(w => parseInt(w.label) === selectedWeight)?.price || product.weights[0].price;
@@ -56,31 +55,42 @@ const PickleDetail = () => {
 
   return (
     <div className="min-h-screen bg-[#FBF9F4] text-[#111111] selection:bg-orange-100">
-      <PremiumNavbar/>
+      {/* NAVBAR */}
+      <div className="relative z-[300]">
+        <PremiumNavbar />
+      </div>
       
-      {/* --- BACK BUTTON --- */}
-      <nav className="fixed top-0 left-0 w-full z-[200] p-6 md:p-10 pointer-events-none">
-        <motion.button 
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          onClick={() => router.back()}
-          className="pointer-events-auto mt-20 md:mt-0 flex items-center gap-2 md:gap-3 px-5 py-3 bg-white/90 backdrop-blur-2xl border border-black/[0.05] rounded-full shadow-2xl hover:shadow-orange-900/10 transition-all group"
-        >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Back to Gallery</span>
-        </motion.button>
+      {/* --- RESPONSIVE BACK BUTTON --- */}
+      <nav className="fixed top-0 left-0 w-full z-[400] pointer-events-none">
+        <div className="max-w-[1600px] mx-auto p-6 md:p-10">
+          <motion.button 
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.1, backgroundColor: "#000", color: "#fff" }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => router.back()}
+            /* Mobile: mt-28 (Navbar ke niche), Pill shape
+               Laptop: md:mt-10 (Corner), Circular Ball
+            */
+            className="pointer-events-auto mt-15 md:mt-1 flex items-center justify-center gap-3 bg-white border border-black/5 shadow-2xl transition-all duration-300 group cursor-pointer
+                       px-6 py-2.5 rounded-full
+                       md:px-0 md:py-0 md:w-16 md:h-16 md:rounded-full"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] md:hidden">Back to Gallery</span>
+          </motion.button>
+        </div>
       </nav>
 
-      <main className="max-w-[1400px] mx-auto px-6 pt-48 md:pt-40 pb-32 lg:pb-20">
+      <main className="max-w-[1400px] mx-auto px-6 pt-44 md:pt-48 pb-32 lg:pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 lg:gap-24 items-start">
           
-          {/* LEFT: STICKY IMAGE */}
-          <div className="lg:col-span-7 lg:sticky lg:top-32">
+          {/* LEFT: IMAGE SECTION */}
+          <div className="lg:col-span-7 lg:sticky lg:top-36">
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
-              className="relative aspect-[4/5] rounded-[40px] md:rounded-[60px] overflow-hidden shadow-2xl group bg-stone-100"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative aspect-[4/5] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-2xl group bg-stone-100"
             >
               <motion.img 
                 src={product.image} 
@@ -88,7 +98,7 @@ const PickleDetail = () => {
                 className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-[3s] ease-out" 
               />
               <div className="absolute top-8 left-8 flex gap-2">
-                 <div className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-full px-4 py-2 flex items-center gap-2">
+                 <div className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-full px-4 py-2 flex items-center gap-2 shadow-2xl">
                     <Droplet size={12} className="text-white fill-white" />
                     <span className="text-[8px] font-black text-white uppercase tracking-widest italic">Sun Matured</span>
                  </div>
@@ -96,7 +106,7 @@ const PickleDetail = () => {
             </motion.div>
           </div>
 
-          {/* RIGHT: CONTENT */}
+          {/* RIGHT: CONTENT SECTION */}
           <div className="lg:col-span-5 flex flex-col pt-4">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 md:space-y-12">
               <header className="space-y-6">
@@ -117,7 +127,6 @@ const PickleDetail = () => {
                   </div>
                   <div className="h-10 w-px bg-black/5" />
                   
-                  {/* VOLUME DROPDOWN */}
                   <div className="relative">
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1 block">Volume Selection</span>
                     <button 
@@ -156,7 +165,6 @@ const PickleDetail = () => {
                 "{product.description}"
               </p>
 
-              {/* QUANTITY PICKER */}
               <div className="space-y-4">
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Jar Quantity</span>
                 <div className="flex items-center bg-white border border-black/5 rounded-full p-2 w-fit shadow-sm">
@@ -166,7 +174,6 @@ const PickleDetail = () => {
                 </div>
               </div>
 
-              {/* DESKTOP ACTIONS */}
               <div className="hidden lg:grid grid-cols-2 gap-4 pt-4">
                 <motion.button onClick={handleAddToCart} whileHover={{ y: -5 }} className="flex items-center justify-center gap-3 py-6 bg-white border border-black/10 rounded-[25px] hover:bg-black hover:text-white transition-all duration-500 cursor-pointer">
                   <ShoppingBag size={20} /><span className="text-[11px] font-black uppercase tracking-widest">Add to Basket</span>
@@ -176,7 +183,6 @@ const PickleDetail = () => {
                 </motion.a>
               </div>
 
-              {/* TRUST BADGES */}
               <div className="grid grid-cols-2 gap-8 pt-12 border-t border-black/[0.05]">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 shrink-0 rounded-xl bg-white border border-black/5 flex items-center justify-center shadow-sm text-emerald-600"><ShieldCheck size={18} /></div>
