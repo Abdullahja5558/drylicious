@@ -112,7 +112,10 @@ const Footer = () => {
           <p className="text-[10px] text-gray-400 font-medium tracking-[0.1em] uppercase">
             © {currentYear} Drylicious Private Limited.
           </p>
-          
+          <div className="flex gap-8">
+            <a href="/privacy-policy" className="text-[10px] text-gray-400 hover:text-[#1a1a1a] uppercase tracking-widest transition-colors font-medium">Privacy Policy</a>
+            <a href="/term-service" className="text-[10px] text-gray-400 hover:text-[#1a1a1a] uppercase tracking-widest transition-colors font-medium">Terms of Service</a>
+          </div>
           <p className="text-[10px] text-gray-400 italic">
             Designed with <span className="text-red-500 text-lg leading-none">♥</span> in FSD
           </p>
