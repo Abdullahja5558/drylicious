@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -13,7 +12,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://drylicious.vercel.app"),
@@ -68,15 +66,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Drylicious | Premium Masalay",
-    description:
-      "100% pure whole spices and ghar kay masalay in Pakistan.",
+    description: "100% pure whole spices and ghar kay masalay in Pakistan.",
   },
-
-  
-
 };
-
-
 
 export default function RootLayout({
   children,
@@ -84,19 +76,46 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      suppressContentEditableWarning
-      suppressHydrationWarning
-    >
+    <html lang="en" suppressContentEditableWarning suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Drylicious Global Foods",
+              url: "https://drylicious.vercel.app",
+              logo: "/logo.png",
+              sameAs: [
+                "https://www.facebook.com/dryliciousfoods",
+                "https://www.instagram.com/dryliciousfoods",
+              ],
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              url: "https://drylicious.vercel.app",
+              name: "Drylicious Global Foods",
+              potentialAction: {
+                "@type": "SearchAction",
+                target:
+                  "https://drylicious.vercel.app/search?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
+      </head>
       <body
-      
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CartProvider>
-        
-        {children}
-        </CartProvider>
+        <CartProvider>{children}</CartProvider>
       </body>
     </html>
   );

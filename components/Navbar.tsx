@@ -1,11 +1,25 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
-import { ShoppingBag, MessageCircle, Menu, X, Flame, Sparkles, ArrowRight } from 'lucide-react';
-import { useCart } from '@/context/CartContext';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useSpring,
+} from "framer-motion";
+import {
+  ShoppingBag,
+  MessageCircle,
+  Menu,
+  X,
+  Flame,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 interface NavItem {
   name: string;
@@ -15,12 +29,12 @@ interface NavItem {
 }
 
 const navLinks: NavItem[] = [
-  { name: 'Best Sellers', href: '/categories/best-sellers' },
-  { name: 'Whole Spices', href: '/categories/whole-spices' },
-  { name: 'Pure Spices', href: '/categories/pure-spices' },
-  { name: 'Wholesale', href: '/wholesale', isWholesale: true }, 
-  { name: 'Sale', href: '/sale', isSale: true },
-  { name: 'Our Story', href: '/about' },
+  { name: "Best Sellers", href: "/categories/best-sellers" },
+  { name: "Whole Spices", href: "/categories/whole-spices" },
+  { name: "Pure Spices", href: "/categories/pure-spices" },
+  { name: "Wholesale", href: "/wholesale", isWholesale: true },
+  { name: "Sale", href: "/sale", isSale: true },
+  { name: "Our Story", href: "/about" },
 ];
 
 const PremiumNavbar = () => {
@@ -28,11 +42,19 @@ const PremiumNavbar = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartCount } = useCart();
-  
+
   const { scrollY } = useScroll();
 
-  const widthRaw = useTransform(scrollY, [0, 150], ["100%", isMobileMenuOpen ? "100%" : "85%"]);
-  const scaleRaw = useTransform(scrollY, [0, 150], [1, isMobileMenuOpen ? 1 : 0.98]);
+  const widthRaw = useTransform(
+    scrollY,
+    [0, 150],
+    ["100%", isMobileMenuOpen ? "100%" : "85%"],
+  );
+  const scaleRaw = useTransform(
+    scrollY,
+    [0, 150],
+    [1, isMobileMenuOpen ? 1 : 0.98],
+  );
   const yRaw = useTransform(scrollY, [0, 150], [0, isMobileMenuOpen ? 0 : 10]);
 
   const navWidth = useSpring(widthRaw, { stiffness: 300, damping: 30 });
@@ -43,39 +65,56 @@ const PremiumNavbar = () => {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-        window.removeEventListener('scroll', handleScroll);
-        document.body.style.overflow = 'unset';
+      window.removeEventListener("scroll", handleScroll);
+      document.body.style.overflow = "unset";
     };
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
   }, [isMobileMenuOpen]);
 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-[300] p-3 md:p-6 flex justify-center pointer-events-none">
         <motion.nav
-          style={{ 
+          style={{
             width: navWidth,
             scale: navScale,
-            y: navY
+            y: navY,
           }}
           className={`
             relative flex items-center justify-between gap-4 px-5 md:px-10 py-2.5 md:py-4 rounded-full pointer-events-auto transition-colors duration-700
-            ${(isScrolled || isMobileMenuOpen)
-              ? 'bg-white/80 backdrop-blur-2xl border border-black/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.1)]' 
-              : 'bg-transparent border-transparent'
+            ${
+              isScrolled || isMobileMenuOpen
+                ? "bg-white/80 backdrop-blur-2xl border border-black/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
+                : "bg-transparent border-transparent"
             }
           `}
         >
           {/* LOGO */}
           <div className="flex-shrink-0 z-[310]">
-            <Link href="/" className="relative block group transition-transform duration-500 hover:scale-105">
+            <Link
+              href="/"
+              className="relative block group transition-transform duration-500 hover:scale-105"
+            >
               <div className="relative w-[110px] h-[30px] md:w-[155px] md:h-[45px]">
-                <Image src="/logo.png" alt="Drylicious" fill className="object-contain" priority />
+                <Image
+                  src="/logo.png"
+                  alt="Drylicious"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+                <Image
+                  src="/logo.png"
+                  alt="Drylicious Global Foods Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
             </Link>
           </div>
@@ -90,22 +129,36 @@ const PremiumNavbar = () => {
                 onMouseLeave={() => setHoveredIndex(null)}
                 className="relative px-5 py-2 group"
               >
-                <span className={`
+                <span
+                  className={`
                   relative z-10 text-[9.5px] font-black uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-2
-                  ${hoveredIndex === i ? 'text-black' : 'text-black/40'}
-                  ${link.isSale ? 'text-red-600' : ''}
-                  ${link.isWholesale ? 'text-amber-700' : ''}
-                `}>
+                  ${hoveredIndex === i ? "text-black" : "text-black/40"}
+                  ${link.isSale ? "text-red-600" : ""}
+                  ${link.isWholesale ? "text-amber-700" : ""}
+                `}
+                >
                   {link.name}
                   {link.isSale && (
                     <motion.span
-                      animate={{ 
+                      animate={{
                         scale: [1, 1.2, 1],
-                        filter: ["drop-shadow(0 0 0px rgba(220,38,38,0))", "drop-shadow(0 0 4px rgba(220,38,38,0.5))", "drop-shadow(0 0 0px rgba(220,38,38,0))"]
+                        filter: [
+                          "drop-shadow(0 0 0px rgba(220,38,38,0))",
+                          "drop-shadow(0 0 4px rgba(220,38,38,0.5))",
+                          "drop-shadow(0 0 0px rgba(220,38,38,0))",
+                        ],
                       }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
                     >
-                      <Flame size={12} fill="currentColor" className="text-red-600" />
+                      <Flame
+                        size={12}
+                        fill="currentColor"
+                        className="text-red-600"
+                      />
                     </motion.span>
                   )}
                 </span>
@@ -115,7 +168,11 @@ const PremiumNavbar = () => {
                     <motion.div
                       layoutId="nav-pill-bg"
                       className="absolute inset-0 bg-white shadow-sm rounded-full z-0"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30,
+                      }}
                     />
                   )}
                 </AnimatePresence>
@@ -137,13 +194,17 @@ const PremiumNavbar = () => {
 
             {/* UNIQUE PREMIUM CART BUBBLE */}
             <Link href="/cart">
-              <motion.div 
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="relative p-2.5 md:p-3 rounded-full bg-black/5 hover:bg-black/10 transition-all group"
               >
-                <ShoppingBag size={18} strokeWidth={1.5} className="text-black" />
-                
+                <ShoppingBag
+                  size={18}
+                  strokeWidth={1.5}
+                  className="text-black"
+                />
+
                 <AnimatePresence mode="popLayout">
                   {cartCount > 0 && (
                     <motion.span
@@ -151,11 +212,11 @@ const PremiumNavbar = () => {
                       initial={{ scale: 0.5, opacity: 0, y: 5 }}
                       animate={{ scale: 1, opacity: 1, y: 0 }}
                       exit={{ scale: 0.5, opacity: 0, y: -5 }}
-                      transition={{ 
-                        type: "spring", 
-                        stiffness: 500, 
+                      transition={{
+                        type: "spring",
+                        stiffness: 500,
                         damping: 15,
-                        mass: 0.8
+                        mass: 0.8,
                       }}
                       className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-orange-900 text-white text-[9px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-[0_4px_10px_rgba(124,45,18,0.3)]"
                     >
@@ -166,7 +227,7 @@ const PremiumNavbar = () => {
 
                 {/* Subtle outer glow when items exist */}
                 {cartCount > 0 && (
-                  <motion.div 
+                  <motion.div
                     animate={{ opacity: [0.2, 0.5, 0.2] }}
                     transition={{ duration: 2, repeat: Infinity }}
                     className="absolute inset-0 rounded-full bg-orange-900/10 -z-10 blur-md"
@@ -175,7 +236,7 @@ const PremiumNavbar = () => {
               </motion.div>
             </Link>
 
-            <button 
+            <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2.5 rounded-full bg-black text-white z-[320] transition-transform active:scale-90 relative"
             >
@@ -196,7 +257,9 @@ const PremiumNavbar = () => {
           >
             {/* Menu Links */}
             <div className="flex flex-col flex-1 justify-center gap-2">
-              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-black/30 mb-2 px-2">Menu</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-black/30 mb-2 px-2">
+                Menu
+              </p>
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.name}
@@ -204,12 +267,14 @@ const PremiumNavbar = () => {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.05, ease: "easeOut" }}
                 >
-                  <Link 
-                    href={link.href} 
+                  <Link
+                    href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="flex items-center justify-between py-3.5 px-2 border-b border-black/5 group active:bg-black/5 rounded-xl transition-colors"
                   >
-                    <span className={`text-3xl md:text-4xl font-medium tracking-tight ${link.isSale ? 'text-red-600' : 'text-black'}`}>
+                    <span
+                      className={`text-3xl md:text-4xl font-medium tracking-tight ${link.isSale ? "text-red-600" : "text-black"}`}
+                    >
                       {link.name}
                     </span>
                     <div className="flex items-center gap-3">
@@ -218,10 +283,16 @@ const PremiumNavbar = () => {
                           animate={{ scale: [1, 1.15, 1], rotate: [-5, 5, -5] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         >
-                          <Flame size={24} fill="currentColor" className="text-red-600" />
+                          <Flame
+                            size={24}
+                            fill="currentColor"
+                            className="text-red-600"
+                          />
                         </motion.div>
                       )}
-                      {link.isWholesale && <Sparkles size={16} className="text-amber-600" />}
+                      {link.isWholesale && (
+                        <Sparkles size={16} className="text-amber-600" />
+                      )}
                       <ArrowRight size={18} className="text-black/20" />
                     </div>
                   </Link>
@@ -231,18 +302,20 @@ const PremiumNavbar = () => {
 
             {/* Bottom Actions */}
             <div className="mt-auto flex flex-col gap-3 pt-6 border-t border-black/5">
-              <Link 
-                href="/cart" 
+              <Link
+                href="/cart"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full flex items-center justify-between bg-black text-white px-6 py-4 rounded-2xl shadow-lg relative overflow-hidden"
               >
                 <div className="flex items-center gap-3">
-                    <ShoppingBag size={20} />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Basket</span>
+                  <ShoppingBag size={20} />
+                  <span className="text-[10px] font-black uppercase tracking-widest">
+                    Basket
+                  </span>
                 </div>
-                
+
                 {/* Mobile Cart Count Animation */}
-                <motion.span 
+                <motion.span
                   key={cartCount}
                   initial={{ scale: 0.8 }}
                   animate={{ scale: [1, 1.2, 1] }}
@@ -251,8 +324,8 @@ const PremiumNavbar = () => {
                   {cartCount} items
                 </motion.span>
               </Link>
-              <a 
-                href={whatsappUrl} 
+              <a
+                href={whatsappUrl}
                 target="_blank"
                 className="w-full flex items-center justify-center gap-2 bg-emerald-500 text-white px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-md"
               >
