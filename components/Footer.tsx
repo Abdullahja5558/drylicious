@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
+import { Facebook, Instagram, MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -23,16 +23,27 @@ const Footer = () => {
               Sourcing the finest organic spices, cold-ground to preserve the raw essence of tradition for your modern kitchen.
             </p>
             <div className="flex gap-5">
-              {[Instagram, Facebook, Twitter].map((Icon, i) => (
-                <motion.a 
-                  key={i}
-                  href="#" 
-                  whileHover={{ y: -3 }}
-                  className="w-10 h-10 rounded-full border border-black/5 flex items-center justify-center text-gray-400 hover:text-orange-900 hover:border-orange-900/20 transition-all duration-300"
-                >
-                  <Icon size={18} />
-                </motion.a>
-              ))}
+              {/* Instagram Link */}
+              <motion.a 
+                href="https://www.instagram.com/drylicious_global.foods" 
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -3 }}
+                className="w-10 h-10 rounded-full border border-black/5 flex items-center justify-center text-gray-400 hover:text-orange-900 hover:border-orange-900/20 transition-all duration-300"
+              >
+                <Instagram size={18} />
+              </motion.a>
+
+              {/* Facebook Link */}
+              <motion.a 
+                href="https://www.facebook.com/drylicousGlobalFoods" 
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -3 }}
+                className="w-10 h-10 rounded-full border border-black/5 flex items-center justify-center text-gray-400 hover:text-orange-900 hover:border-orange-900/20 transition-all duration-300"
+              >
+                <Facebook size={18} />
+              </motion.a>
             </div>
           </div>
 
@@ -40,14 +51,18 @@ const Footer = () => {
           <div>
             <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-950/40 mb-8">Navigation</h4>
             <ul className="space-y-4">
-              {['Our Spices', 'Gift Boxes', 'Process', 'About Us', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-gray-500 hover:text-[#1a1a1a] text-sm font-light transition-colors flex items-center group">
-                    {item}
-                    <ArrowUpRight size={12} className="ml-1 opacity-0 group-hover:opacity-100 transition-all -translate-y-1 group-hover:translate-y-0" />
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="/categories/whole-spices" className="text-gray-500 hover:text-[#1a1a1a] text-sm font-light transition-colors flex items-center group">
+                  Our Spices
+                  <ArrowUpRight size={12} className="ml-1 opacity-0 group-hover:opacity-100 transition-all -translate-y-1 group-hover:translate-y-0" />
+                </a>
+              </li>
+              <li>
+                <a href="/about" className="text-gray-500 hover:text-[#1a1a1a] text-sm font-light transition-colors flex items-center group">
+                  About Us
+                  <ArrowUpRight size={12} className="ml-1 opacity-0 group-hover:opacity-100 transition-all -translate-y-1 group-hover:translate-y-0" />
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -97,10 +112,7 @@ const Footer = () => {
           <p className="text-[10px] text-gray-400 font-medium tracking-[0.1em] uppercase">
             © {currentYear} Drylicious Private Limited.
           </p>
-          <div className="flex gap-8">
-            <a href="#" className="text-[10px] text-gray-400 hover:text-[#1a1a1a] uppercase tracking-widest transition-colors font-medium">Privacy Policy</a>
-            <a href="#" className="text-[10px] text-gray-400 hover:text-[#1a1a1a] uppercase tracking-widest transition-colors font-medium">Terms of Service</a>
-          </div>
+          
           <p className="text-[10px] text-gray-400 italic">
             Designed with <span className="text-red-500 text-lg leading-none">♥</span> in FSD
           </p>
