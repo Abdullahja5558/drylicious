@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// 1. Data ko Memoize kiya taake unnecessary re-renders na hon
 const hotspots = [
   { id: 1, name: "Sabz Ilaichi", origin: "Idukki Hills", top: "35%", left: "18%", description: "Floral, hand-picked green cardamom pods." },
   { id: 2, name: "Kali Mirch Sabit", origin: "Malabar Coast", top: "55%", left: "56%", description: "Bold, sun-dried black gold with woody heat." },
@@ -19,27 +20,29 @@ const OriginMap = () => {
 
   useEffect(() => {
     const handleScroll = () => setActiveId(null);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <section className="relative w-full py-16 md:py-24 lg:py-32 bg-[#fdfcf9] overflow-hidden">
-      {/* Editorial Grain Texture */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+    // 2. Semantic <section> with ID for navigation SEO
+    <section 
+      id="sourcing-map"
+      className="relative w-full py-16 md:py-24 lg:py-32 bg-[#fdfcf9] overflow-hidden"
+      aria-label="Global Spice Sourcing Map"
+    >
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" aria-hidden="true" />
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24">
-        {/* Main Grid: Stacked on mobile, Grid on Desktop */}
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           
-          {/* --- Content Section (Top on Mobile, Left on Desktop) --- */}
-          <div className="w-full lg:col-span-5 z-20 order-1 flex flex-col items-center lg:items-start text-center lg:text-left">
+          {/* --- Content Section --- */}
+          <header className="w-full lg:col-span-5 z-20 order-1 flex flex-col items-center lg:items-start text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col items-center lg:items-start"
             >
               <div className="flex items-center gap-4 mb-6 md:mb-8">
                 <div className="hidden lg:block w-12 h-[1px] bg-[#d8a790]" />
@@ -51,33 +54,33 @@ const OriginMap = () => {
 
               <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif text-black leading-[0.95] mb-8 md:mb-12 tracking-tighter">
                 A Taste <br />
-                <span className="text-[#d8a790] italic font-light text-4xl md:text-6xl lg:text-7xl">Without</span> <br />
+                <span className="text-[#d8a790] italic font-light">Without</span> <br />
                 Boundaries.
               </h2>
 
               <div className="space-y-8 md:space-y-10 border-t border-black/5 pt-8 md:pt-12 max-w-sm w-full">
                 <div className="flex flex-col gap-3">
-                  <h4 className="text-[10px] md:text-[11px] uppercase tracking-widest text-black font-bold">The Philosophy</h4>
+                  <h3 className="text-[10px] md:text-[11px] uppercase tracking-widest text-black font-bold">The Philosophy</h3>
                   <p className="text-gray-500 font-light text-sm leading-relaxed px-4 lg:px-0">
                     Bypassing the industrial complex through direct trade with legacy farmers. Stone-ground to preserve nature's essential oils.
                   </p>
                 </div>
-
                 <p className="hidden md:block text-[#d8a790] font-serif italic text-xl leading-relaxed">
                   "From the soil of the ancients, to your modern kitchen."
                 </p>
               </div>
             </motion.div>
-          </div>
+          </header>
 
-          {/* --- Map Section (Bottom on Mobile, Right on Desktop) --- */}
-          <div className="w-full lg:col-span-7 relative order-2 mt-8 lg:mt-0">
+          {/* --- Map Section --- */}
+          <div className="w-full lg:col-span-7 relative order-2 mt-8 lg:mt-0" role="img" aria-label="World map showing spice origins">
             <div className="relative aspect-[4/3] md:aspect-[16/10] w-full flex items-center justify-center bg-black/[0.01] rounded-[40px] lg:bg-transparent overflow-visible">
               
-              {/* World Map Background */}
+              {/* World Map Background - Performance: Use local SVG if possible */}
               <motion.div 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 0.25 }}
+                viewport={{ once: true }}
                 transition={{ duration: 2 }}
                 className="absolute inset-0 z-0 grayscale contrast-125 select-none pointer-events-none scale-110 md:scale-100"
                 style={{
@@ -88,12 +91,6 @@ const OriginMap = () => {
                 }}
               />
 
-              {/* Decorative Rings */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-[90%] h-[90%] border border-[#d8a790]/10 rounded-full" />
-                <div className="absolute w-[65%] h-[65%] border border-black/[0.02] rounded-full" />
-              </div>
-
               {/* Hotspots */}
               {hotspots.map((spot) => (
                 <div
@@ -101,11 +98,13 @@ const OriginMap = () => {
                   className="absolute z-30 transform -translate-x-1/2 -translate-y-1/2"
                   style={{ top: spot.top, left: spot.left }}
                 >
-                  <div 
-                    className="relative flex items-center justify-center cursor-pointer p-4"
+                  <button // 3. Link/Button for Accessibility (Tab key support)
+                    className="relative flex items-center justify-center cursor-pointer p-4 outline-none focus:scale-125 transition-transform"
                     onMouseEnter={() => setActiveId(spot.id)}
                     onMouseLeave={() => setActiveId(null)}
                     onClick={() => setActiveId(activeId === spot.id ? null : spot.id)}
+                    aria-expanded={activeId === spot.id}
+                    title={spot.name}
                   >
                     {/* Magnetic Aura */}
                     <motion.div 
@@ -123,7 +122,7 @@ const OriginMap = () => {
                       className="w-2 h-2 md:w-2.5 md:h-2.5 border border-[#d8a790] rounded-full relative z-10 shadow-2xl transition-all" 
                     />
 
-                    {/* Tooltip */}
+                    {/* Tooltip Content */}
                     <AnimatePresence>
                       {activeId === spot.id && (
                         <motion.div
@@ -139,12 +138,11 @@ const OriginMap = () => {
                           <p className="text-gray-500 text-[8px] md:text-[9px] leading-relaxed font-medium uppercase tracking-widest">
                             {spot.description}
                           </p>
-                          
                           <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-white/95 backdrop-blur-2xl rotate-45 border-r border-b border-white/60" />
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </button>
                 </div>
               ))}
             </div>
@@ -152,10 +150,9 @@ const OriginMap = () => {
         </div>
       </div>
 
-      {/* Footer Branding */}
-      <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 text-[7px] md:text-[8px] tracking-[0.6em] md:tracking-[1em] text-gray-400 uppercase font-bold opacity-30 whitespace-nowrap">
+      <footer className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 text-[7px] md:text-[8px] tracking-[0.6em] md:tracking-[1em] text-gray-400 uppercase font-bold opacity-30 whitespace-nowrap">
         Drylicious Sourcing Index 2026
-      </div>
+      </footer>
     </section>
   );
 };
