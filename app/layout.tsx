@@ -3,14 +3,17 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 
+// Fonts optimization with 'swap' to prevent render-blocking
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap", 
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +33,6 @@ export const metadata: Metadata = {
     "Ghar Kay Masalay",
     "Organic Spices",
     "Drylicious",
-    "Ghar Kay Masalay",
     "Whole Spices Pakistan",
     "Organic Masala",
     "Sabut Masala",
@@ -40,7 +42,6 @@ export const metadata: Metadata = {
   ],
 
   authors: [{ name: "Drylicious" }],
-
   creator: "Drylicious",
   publisher: "Drylicious",
 
@@ -76,49 +77,43 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressContentEditableWarning suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Preconnect for Google Fonts */}
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        {/* --- ORGANIZATIONAL SCHEMA --- */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Drylicious Global Foods",
-              url: "https://drylicious.vercel.app",
-              logo: "/logo.png",
-              sameAs: [
+              "name": "Drylicious Global Foods",
+              "url": "https://drylicious.vercel.app",
+              "logo": "https://drylicious.vercel.app/logo.png",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+923367999509",
+                "contactType": "customer service"
+              },
+              "sameAs": [
                 "https://www.facebook.com/dryliciousfoods",
                 "https://www.instagram.com/dryliciousfoods",
               ],
             }),
           }}
         />
+
+        {/* --- SEARCH ACTION SCHEMA --- */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              url: "https://drylicious.vercel.app",
-              name: "Drylicious Global Foods",
-              potentialAction: {
+              "url": "https://drylicious.vercel.app",
+              "name": "Drylicious Global Foods",
+              "potentialAction": {
                 "@type": "SearchAction",
-                target:
-                  "https://drylicious.vercel.app/search?q={search_term_string}",
+                "target": "https://drylicious.vercel.app/search?q={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             }),
@@ -126,9 +121,11 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#FBF9F4] text-[#111111]`}
       >
-        <CartProvider>{children}</CartProvider>
+        <CartProvider>
+          {children}
+        </CartProvider>
       </body>
     </html>
   );
