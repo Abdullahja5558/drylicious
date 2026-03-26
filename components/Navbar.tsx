@@ -16,8 +16,8 @@ import {
   Menu,
   X,
   Flame,
-  Sparkles,
   ArrowRight,
+  ShieldCheck, // Admin Icon
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
@@ -158,14 +158,25 @@ const PremiumNavbar = () => {
           </div>
 
           {/* RIGHT ACTIONS */}
-          <div className="flex items-center gap-2 md:gap-4 z-[310]">
+          <div className="flex items-center gap-2 md:gap-3 z-[310]">
+            {/* --- ADMIN DASHBOARD ACCESS (DESKTOP) --- */}
+            <Link href="/admin-portal">
+              <motion.div
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(0,0,0,0.05)" }}
+                className="hidden md:flex p-3 rounded-full transition-colors group relative"
+                title="Admin Command Center"
+              >
+                <ShieldCheck size={18} strokeWidth={1.5} className="text-black/20 group-hover:text-black transition-colors" />
+              </motion.div>
+            </Link>
+
             <motion.a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Place an order via WhatsApp"
               whileHover={{ y: -2 }}
-              className="hidden md:flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full text-[9px] font-black uppercase tracking-widest transition-all"
+              className="hidden md:flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full text-[9px] font-black uppercase tracking-widest transition-all shadow-xl shadow-black/10"
             >
               <MessageCircle size={14} className="text-emerald-400" aria-hidden="true" />
               Order
@@ -218,7 +229,14 @@ const PremiumNavbar = () => {
             className="fixed inset-0 bg-white z-[250] flex flex-col pt-32 pb-8 px-6 lg:hidden h-[100dvh]"
           >
             <div className="flex flex-col flex-1 justify-center gap-2">
-              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-black/40 mb-2 px-2">Menu</p>
+              <div className="flex justify-between items-end mb-2 px-2">
+                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-black/40">Menu</p>
+                {/* Admin Link in Mobile Menu */}
+                <Link href="/admin-portal" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-1 text-[9px] font-black uppercase tracking-[0.4em] text-black/20 hover:text-black">
+                  <ShieldCheck size={12} /> Admin
+                </Link>
+              </div>
+
               {navLinks.map((link, i) => (
                 <motion.div key={link.name} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.05 }}>
                   <Link
@@ -239,7 +257,6 @@ const PremiumNavbar = () => {
               <Link
                 href="/cart"
                 onClick={() => setIsMobileMenuOpen(false)}
-                aria-label="Go to shopping basket"
                 className="w-full flex items-center justify-between bg-black text-white px-6 py-4 rounded-2xl shadow-lg"
               >
                 <div className="flex items-center gap-3">
