@@ -25,7 +25,7 @@ const CheckoutPage = () => {
   const [finalStoredTotal, setFinalStoredTotal] = useState(0);
 
   const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-  const delivery = subtotal > 0 ? 250 : 0;
+  const delivery = subtotal > 0 ? 180 : 0;
   const currentTotal = subtotal + delivery;
 
   const [formData, setFormData] = useState({
