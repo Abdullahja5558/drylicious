@@ -3,18 +3,37 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image'; // For Performance
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Trash2, MessageCircle, ArrowLeft, ShoppingBag, Plus, Minus, MoveRight, Sparkles, Medal, CreditCard } from 'lucide-react';
+import { 
+  Trash2, 
+  MessageCircle, 
+  ArrowLeft, 
+  ShoppingBag, 
+  Plus, 
+  Minus, 
+  MoveRight, 
+  Sparkles, 
+  Medal, 
+  CreditCard, 
+  Gift,
+  CheckCircle2
+} from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 const CartPage = () => {
   const router = useRouter();
-  const { cart, updateQty, removeFromCart, cartCount } = useCart();
-
-  const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-  const delivery = subtotal > 0 ? 180 : 0; 
-  const total = subtotal + delivery;
+  const { 
+    cart, 
+    updateQty, 
+    removeFromCart, 
+    cartCount, 
+    subtotal, 
+    isFreeDelivery, 
+    deliveryCharges, 
+    totalAmount,
+    freeDeliveryThreshold 
+  } = useCart();
 
   const generateWhatsAppOrder = () => {
     const phoneNumber = "923367999509";
@@ -22,7 +41,7 @@ const CartPage = () => {
       `${index + 1}. *${item.name}* ⚖️ Size: ${item.weight}\n🔢 Qty: ${item.qty}\n💰 Price: Rs. ${item.price * item.qty}`
     ).join('\n\n');
     
-    const message = `Asalam-o-Alaikum Drylicious! 👋✨\n\nI want to place a *New Order*:\n\n${orderDetails}\n\n--- 💳 *Billing Summary* ---\n📝 Subtotal: Rs. ${subtotal}\n🚚 Delivery: Rs. ${delivery}\n⭐ *Grand Total: Rs. ${total}*\n\nPlease confirm my order. Thank you!`;
+    const message = `Asalam-o-Alaikum Drylicious! 👋✨\n\nI want to place a *New Order*:\n\n${orderDetails}\n\n--- 💳 *Billing Summary* ---\n📝 Subtotal: Rs. ${subtotal}\n🚚 Delivery: ${isFreeDelivery ? 'FREE' : `Rs. ${deliveryCharges}`}\n⭐ *Grand Total: Rs. ${totalAmount}*\n\nPlease confirm my order. Thank you!`;
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -77,7 +96,7 @@ const CartPage = () => {
           </header>
 
           <div className="divide-y divide-black/[0.05]">
-            <AnimatePresence>
+            <AnimatePresence mode='popLayout'>
               {cart.map((item) => (
                 <motion.div 
                   key={item.id}
@@ -112,7 +131,7 @@ const CartPage = () => {
                   </div>
 
                   <div className="text-right">
-                    <p className="text-3xl font-medium tracking-tighter">Rs. {item.price * item.qty}</p>
+                    <p className="text-3xl font-medium tracking-tighter tabular-nums">Rs. {item.price * item.qty}</p>
                   </div>
                 </motion.div>
               ))}
@@ -125,41 +144,80 @@ const CartPage = () => {
            <div className="bg-white rounded-[50px] p-10 md:p-12 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.06)] border border-black/[0.01] sticky top-32">
               <h4 className="text-[10px] font-black uppercase tracking-[0.5em] mb-12 text-orange-900/40 border-b border-black/5 pb-6">Order Summary</h4>
               
+              {/* --- FREE DELIVERY PROGRESS --- */}
+              <div className="mb-10 px-6 py-5 bg-orange-50/50 rounded-3xl border border-orange-100">
+                {!isFreeDelivery ? (
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest">
+                      <span className="text-orange-900/60 flex items-center gap-2 italic">
+                        <Gift size={12} /> Add Rs. {freeDeliveryThreshold - subtotal} for FREE Delivery
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full bg-orange-900/10 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${Math.min((subtotal / freeDeliveryThreshold) * 100, 100)}%` }}
+                        className="h-full bg-orange-900"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <motion.div 
+                    initial={{ scale: 0.9, opacity: 0 }} 
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="flex items-center gap-3 text-emerald-700"
+                  >
+                    <CheckCircle2 size={20} />
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black uppercase tracking-tighter leading-none">Shipping Blessing</span>
+                      <span className="text-[8px] font-medium uppercase tracking-[0.2em] opacity-60">Your delivery is on us!</span>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+
               <div className="space-y-6 mb-12">
                 <div className="justify-between flex text-sm">
                   <span className="text-gray-400 font-light italic">Order Subtotal</span>
-                  <span className="font-medium tracking-tighter">Rs. {subtotal}</span>
+                  <span className="font-medium tracking-tighter tabular-nums">Rs. {subtotal}</span>
                 </div>
-                <div className="justify-between flex text-sm">
-                  <span className="text-gray-400 font-light italic">Flat Delivery Fee</span>
-                  <span className="font-medium tracking-tighter text-orange-900">Rs. {delivery}</span>
+                <div className="justify-between flex text-sm items-center">
+                  <span className="text-gray-400 font-light italic">Delivery Fee</span>
+                  <span className={`font-medium tracking-tighter tabular-nums ${isFreeDelivery ? 'text-emerald-600' : 'text-orange-900'}`}>
+                    {isFreeDelivery ? (
+                      <span className="flex items-center gap-1">
+                        <span className="line-through text-gray-300 text-xs mr-1">Rs. 250</span>
+                        FREE
+                      </span>
+                    ) : (
+                      `Rs. ${deliveryCharges}`
+                    )}
+                  </span>
                 </div>
                 <div className="pt-6 border-t border-black/5 flex justify-between items-end">
                   <span className="text-2xl font-serif">Grand Total</span>
-                  <span className="text-5xl font-serif tracking-tighter">Rs. {total}</span>
+                  <span className="text-5xl font-serif tracking-tighter tabular-nums">Rs. {totalAmount}</span>
                 </div>
               </div>
 
-              {/* ACTION BUTTONS: Now with Dual Strategy */}
+              {/* ACTION BUTTONS */}
               <div className="space-y-4">
-                {/* 1. Supabase Checkout (Direct Order Page) */}
                 <motion.button 
-                  onClick={() => router.push('/checkout')} // Is page par hum Supabase form banayenge
+                  onClick={() => router.push('/checkout')}
                   whileHover={{ y: -5, backgroundColor: "#000" }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-7 bg-[#111111] text-white rounded-[30px] flex items-center justify-center gap-4 group shadow-2xl transition-all duration-500"
+                  className="w-full py-7 bg-[#111111] text-white rounded-[30px] flex items-center justify-center gap-4 group shadow-2xl transition-all duration-500 cursor-pointer"
                 >
                    <CreditCard size={20} />
                    <span className="text-[11px] font-black uppercase tracking-[0.3em]">Direct Checkout</span>
                    <MoveRight size={20} className="group-hover:translate-x-2 transition-transform" />
                 </motion.button>
 
-                {/* 2. WhatsApp Option (Secondary) */}
                 <motion.button 
                   onClick={generateWhatsAppOrder}
                   whileHover={{ y: -5, backgroundColor: "#25D366", color: "#fff" }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-6 border border-black/5 text-[#111111] rounded-[30px] flex items-center justify-center gap-4 group transition-all duration-500"
+                  className="w-full py-6 border border-black/5 text-[#111111] rounded-[30px] flex items-center justify-center gap-4 group transition-all duration-500 cursor-pointer"
                 >
                    <MessageCircle size={20} />
                    <span className="text-[11px] font-black uppercase tracking-[0.3em]">WhatsApp Buy</span>

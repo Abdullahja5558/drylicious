@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { 
   ArrowLeft, Sparkles, ShieldCheck, Truck, 
   CreditCard, Loader2, MapPin, PackageCheck, 
-  ChevronRight, Home, User
+  ChevronRight, Home, User, Gift
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { supabase } from '@/lib/supabase';
@@ -15,18 +15,24 @@ import { Toaster, toast } from 'sonner';
 
 const CheckoutPage = () => {
   const router = useRouter();
-  const { cart, cartCount, removeFromCart } = useCart();
+  // Destructuring all needed variables from updated CartContext
+  const { 
+    cart, 
+    cartCount, 
+    removeFromCart, 
+    subtotal, 
+    isFreeDelivery, 
+    deliveryCharges, 
+    totalAmount 
+  } = useCart();
+
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [step, setStep] = useState(1);
   const [orderId, setOrderId] = useState('');
   
-  // FIX: Final amount ko state mein store karna taake cart empty hone par zero na ho
+  // Final amount ko state mein store karna taake success screen par data safe rahe
   const [finalStoredTotal, setFinalStoredTotal] = useState(0);
-
-  const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-  const delivery = subtotal > 0 ? 180 : 0;
-  const currentTotal = subtotal + delivery;
 
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', address: '', city: 'Lahore', zip: ''
@@ -41,8 +47,8 @@ const CheckoutPage = () => {
     setLoading(true);
     const tempId = `DRY-${Math.random().toString(36).substr(2, 7).toUpperCase()}`;
     
-    // Yahan hum current total ko lock kar rahe hain
-    const orderTotal = currentTotal;
+    // Yahan hum context se aane wala final total amount lock kar rahe hain
+    const orderTotal = totalAmount;
 
     try {
       const { error } = await supabase.from('orders').insert([{
@@ -58,7 +64,7 @@ const CheckoutPage = () => {
       if (error) throw error;
 
       setOrderId(tempId);
-      setFinalStoredTotal(orderTotal); // Success screen ke liye amount lock
+      setFinalStoredTotal(orderTotal); 
       setIsSuccess(true);
       
       // Cart clear karne se pehle amount save ho chuki hai
@@ -75,7 +81,7 @@ const CheckoutPage = () => {
       
       {/* --- ELITE NAVIGATION --- */}
       <nav className="max-w-[1600px] mx-auto p-6 md:p-10 flex justify-between items-center sticky top-0 bg-[#FBF9F4]/90 backdrop-blur-xl z-[100]">
-        <motion.button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white border border-black/5 shadow-sm flex items-center justify-center cursor-pointer"><ArrowLeft size={16} /></motion.button>
+        <motion.button onClick={() => router.back()} className="w-10 h-10 rounded-full bg-white border border-black/5 shadow-sm flex items-center justify-center cursor-pointer transition-colors hover:bg-black hover:text-white"><ArrowLeft size={16} /></motion.button>
         <div className="flex items-center gap-3 md:gap-8">
            {[1, 2, 3].map((s) => (
              <div key={s} className="flex items-center gap-2">
@@ -116,7 +122,7 @@ const CheckoutPage = () => {
                     <InputField label="Zip Code" placeholder="54000" value={formData.zip} onChange={(v: string) => setFormData({...formData, zip: v})} />
                   </div>
                   <div className="flex gap-4 pt-8">
-                    <button onClick={() => setStep(1)} className="flex-1 py-7 border border-black/5 rounded-2xl text-[9px] font-black uppercase tracking-widest text-gray-400 cursor-pointer">Back</button>
+                    <button onClick={() => setStep(1)} className="flex-1 py-7 border border-black/5 rounded-2xl text-[9px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:bg-white transition-colors">Back</button>
                     <button disabled={!isStep2Valid} onClick={() => setStep(3)} className={`flex-[2.5] py-7 rounded-2xl text-[9px] font-black uppercase tracking-widest shadow-2xl transition-all ${isStep2Valid ? 'bg-[#111111] text-white cursor-pointer' : 'bg-gray-100 text-gray-300'}`}>Review Order</button>
                   </div>
                 </div>
@@ -133,7 +139,7 @@ const CheckoutPage = () => {
                 </div>
                 <button disabled={loading} onClick={handleSubmit} className="w-full py-8 bg-[#111111] text-white rounded-[32px] shadow-2xl flex items-center justify-center gap-5 cursor-pointer disabled:opacity-50">
                   {loading ? <Loader2 className="animate-spin" /> : <ShieldCheck size={20} className="text-orange-300" />}
-                  <span className="text-[11px] font-black uppercase tracking-[0.5em]">Confirm Purchase • Rs. {currentTotal}</span>
+                  <span className="text-[11px] font-black uppercase tracking-[0.5em]">Confirm Purchase • Rs. {totalAmount}</span>
                 </button>
               </motion.div>
             )}
@@ -144,35 +150,50 @@ const CheckoutPage = () => {
         <div className="lg:col-span-5 order-1 lg:order-2">
            <div className="bg-white rounded-[40px] p-10 border border-black/[0.01] shadow-xl lg:sticky lg:top-32">
               <p className="text-[9px] font-black uppercase tracking-[0.5em] text-orange-900/40 mb-10 border-b border-black/5 pb-5">Cart Inventory ({cartCount})</p>
-              <div className="space-y-6 max-h-[300px] overflow-y-auto mb-10 pr-4">
+              
+              <div className="space-y-6 max-h-[300px] overflow-y-auto mb-10 pr-4 custom-scrollbar">
                 {cart.map((item) => (
                   <div key={item.id} className="flex gap-4 items-center">
                     <div className="relative w-12 h-14 bg-stone-50 rounded-xl overflow-hidden border border-black/5 flex-shrink-0"><Image src={item.image} alt={item.name} fill className="object-cover" /></div>
                     <div className="flex-grow"><h4 className="text-[10px] font-bold uppercase leading-none mb-1">{item.name}</h4><p className="text-[8px] font-black text-black/20 uppercase tracking-widest">{item.qty} x {item.weight}</p></div>
-                    <span className="text-[10px] font-bold">Rs. {item.price * item.qty}</span>
+                    <span className="text-[10px] font-bold tabular-nums">Rs. {item.price * item.qty}</span>
                   </div>
                 ))}
               </div>
+
               <div className="space-y-3 pt-6 border-t border-black/5">
-                <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-black/30"><span>Subtotal</span><span>Rs. {subtotal}</span></div>
-                <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-orange-900/60"><span>Logistics</span><span>Rs. {delivery}</span></div>
+                <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-black/30">
+                  <span>Subtotal</span>
+                  <span className="tabular-nums">Rs. {subtotal}</span>
+                </div>
+                
+                <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest">
+                  <span className="text-black/30">Logistics</span>
+                  <span className={`tabular-nums ${isFreeDelivery ? 'text-emerald-600' : 'text-orange-900/60'}`}>
+                    {isFreeDelivery ? (
+                      <span className="flex items-center gap-1"><Gift size={10} /> FREE</span>
+                    ) : (
+                      `Rs. ${deliveryCharges}`
+                    )}
+                  </span>
+                </div>
+
                 <div className="flex justify-between items-end pt-4">
                   <span className="text-xl font-serif">Grand Total</span>
-                  <span className="text-4xl font-serif tracking-tighter">Rs. {currentTotal}</span>
+                  <span className="text-4xl font-serif tracking-tighter tabular-nums">Rs. {totalAmount}</span>
                 </div>
               </div>
            </div>
         </div>
       </main>
 
-      {/* --- SUCCESS OVERLAY (FIXED AMOUNT) --- */}
+      {/* --- SUCCESS OVERLAY --- */}
       <AnimatePresence>
         {isSuccess && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="fixed inset-0 bg-[#FBF9F4] z-[600] flex flex-col items-center justify-center p-6 text-center overflow-hidden touch-none">
              <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="w-20 h-20 bg-[#111111] text-white rounded-[32px] flex items-center justify-center mb-8 shadow-2xl shrink-0"><PackageCheck size={36} /></motion.div>
              <h2 className="text-6xl md:text-8xl font-serif tracking-tighter mb-4 text-[#111111]">Order <span className="italic opacity-10 text-orange-900">Captured.</span></h2>
              
-             {/* Receipt Card */}
              <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-white border border-black/[0.03] rounded-[40px] p-8 md:p-10 w-full max-w-sm mb-10 shadow-sm shrink-0">
                 <div className="space-y-4 text-left">
                    <div className="flex justify-between border-b border-black/[0.03] pb-3"><span className="text-[8px] font-black uppercase text-black/20">Customer</span><span className="text-[10px] font-bold uppercase truncate max-w-[150px]">{formData.name}</span></div>
@@ -180,7 +201,7 @@ const CheckoutPage = () => {
                    <div className="flex justify-between border-b border-black/[0.03] pb-3"><span className="text-[8px] font-black uppercase text-black/20">Method</span><span className="text-[10px] font-bold uppercase italic">Cash on Delivery</span></div>
                    <div className="flex justify-between pt-3">
                       <span className="text-[8px] font-black uppercase text-black/20">Final Amount</span>
-                      <span className="text-[18px] font-serif font-bold text-orange-900">Rs. {finalStoredTotal}</span>
+                      <span className="text-[18px] font-serif font-bold text-orange-900 tabular-nums">Rs. {finalStoredTotal}</span>
                    </div>
                 </div>
              </motion.div>
@@ -197,7 +218,7 @@ const CheckoutPage = () => {
 const InputField = ({ label, placeholder, value, onChange }: any) => (
   <div className="space-y-2 group flex-1">
     <label className="text-[8px] font-black uppercase tracking-[0.4em] text-orange-900/40 px-1">{label} *</label>
-    <input required placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} className="w-full bg-white border border-black/[0.05] rounded-2xl p-6 text-[13px] outline-none shadow-sm focus:ring-1 ring-black/10" />
+    <input required placeholder={placeholder} value={value} onChange={(e) => onChange(e.target.value)} className="w-full bg-white border border-black/[0.05] rounded-2xl p-6 text-[13px] outline-none shadow-sm focus:ring-1 ring-black/10 transition-all placeholder:text-gray-200" />
   </div>
 );
 
