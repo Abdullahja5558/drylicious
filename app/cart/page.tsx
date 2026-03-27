@@ -186,7 +186,7 @@ const CartPage = () => {
                   <span className={`font-medium tracking-tighter tabular-nums ${isFreeDelivery ? 'text-emerald-600' : 'text-orange-900'}`}>
                     {isFreeDelivery ? (
                       <span className="flex items-center gap-1">
-                        <span className="line-through text-gray-300 text-xs mr-1">Rs. 250</span>
+                        <span className="line-through text-gray-300 text-xs mr-1">Rs. 180</span>
                         FREE
                       </span>
                     ) : (
