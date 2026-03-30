@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { 
   ArrowLeft, Sparkles, ShieldCheck, Truck, 
   CreditCard, Loader2, MapPin, PackageCheck, 
-  ChevronRight, Home, User, Gift
+  ChevronRight, Home, User, Gift, Plus, Minus, Trash2
 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { supabase } from '@/lib/supabase';
@@ -15,15 +15,11 @@ import { Toaster, toast } from 'sonner';
 
 const CheckoutPage = () => {
   const router = useRouter();
-  // Destructuring all needed variables from updated CartContext
+  
+  // Destructuring needed variables and functions from CartContext
   const { 
     cart, 
-    cartCount, 
-    removeFromCart, 
-    subtotal, 
-    isFreeDelivery, 
-    deliveryCharges, 
-    totalAmount 
+    removeFromCart
   } = useCart();
 
   const [loading, setLoading] = useState(false);
@@ -31,23 +27,58 @@ const CheckoutPage = () => {
   const [step, setStep] = useState(1);
   const [orderId, setOrderId] = useState('');
   
-  // Final amount ko state mein store karna taake success screen par data safe rahe
-  const [finalStoredTotal, setFinalStoredTotal] = useState(0);
+  // Local state to manage quantities in checkout before sending to DB
+  const [localCart, setLocalCart] = useState(cart);
 
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', address: '', city: 'Lahore', zip: ''
   });
 
+  // 1. Calculate Subtotal dynamically based on local checkout quantities
+  const checkoutSubtotal = localCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+  
+  // 2. Free delivery threshold condition (Rs. 3000 or above)
+  const isEligibleForFreeDelivery = checkoutSubtotal >= 3000;
+  
+  // 3. Delivery charges logic: 0 if eligible, otherwise strictly 180
+  const deliveryCharges = isEligibleForFreeDelivery ? 0 : 180;
+  
+  // 4. Final total calculation
+  const totalAmount = checkoutSubtotal + deliveryCharges;
+
+  // Final amount locked for success screen
+  const [finalStoredTotal, setFinalStoredTotal] = useState(0);
+
   const isStep1Valid = formData.name.length >= 3 && formData.phone.length >= 11;
   const isStep2Valid = formData.address.length >= 10 && formData.city.length >= 3;
 
+  // Function to update quantity in local checkout state
+  const handleUpdateQuantity = (id: string, newQty: number) => {
+    if (newQty < 1) return;
+    
+    setLocalCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id ? { ...item, qty: newQty } : item
+      )
+    );
+  };
+
+  // Function to remove item directly from checkout view
+  const handleRemoveItem = (id: string) => {
+    setLocalCart((prevCart) => prevCart.filter((item) => item.id !== id));
+    removeFromCart(id); // Context sync
+    toast.success("Item removed from cart");
+  };
+
   const handleSubmit = async () => {
     if (!isStep1Valid || !isStep2Valid) return;
+    if (localCart.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
 
     setLoading(true);
     const tempId = `DRY-${Math.random().toString(36).substr(2, 7).toUpperCase()}`;
-    
-    // Yahan hum context se aane wala final total amount lock kar rahe hain
     const orderTotal = totalAmount;
 
     try {
@@ -56,7 +87,7 @@ const CheckoutPage = () => {
         email: formData.email,
         phone: formData.phone,
         address: `${formData.address}, ${formData.city}`,
-        items: cart,
+        items: localCart, // Sending the updated quantities
         total: orderTotal,
         status: 'pending'
       }]);
@@ -67,8 +98,8 @@ const CheckoutPage = () => {
       setFinalStoredTotal(orderTotal); 
       setIsSuccess(true);
       
-      // Cart clear karne se pehle amount save ho chuki hai
-      cart.forEach(item => removeFromCart(item.id));
+      // Clear cart items after successful order
+      localCart.forEach(item => removeFromCart(item.id));
       
     } catch (err: any) {
       toast.error(`Connection Error: ${err.message}`);
@@ -146,31 +177,68 @@ const CheckoutPage = () => {
           </AnimatePresence>
         </div>
 
-        {/* RIGHT SIDE: CART SIDEBAR */}
+        {/* RIGHT SIDE: CART SIDEBAR (Real-time Editable) */}
         <div className="lg:col-span-5 order-1 lg:order-2">
            <div className="bg-white rounded-[40px] p-10 border border-black/[0.01] shadow-xl lg:sticky lg:top-32">
-              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-orange-900/40 mb-10 border-b border-black/5 pb-5">Cart Inventory ({cartCount})</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-orange-900/40 mb-10 border-b border-black/5 pb-5">Cart Inventory ({localCart.length})</p>
               
               <div className="space-y-6 max-h-[300px] overflow-y-auto mb-10 pr-4 custom-scrollbar">
-                {cart.map((item) => (
-                  <div key={item.id} className="flex gap-4 items-center">
-                    <div className="relative w-12 h-14 bg-stone-50 rounded-xl overflow-hidden border border-black/5 flex-shrink-0"><Image src={item.image} alt={item.name} fill className="object-cover" /></div>
-                    <div className="flex-grow"><h4 className="text-[10px] font-bold uppercase leading-none mb-1">{item.name}</h4><p className="text-[8px] font-black text-black/20 uppercase tracking-widest">{item.qty} x {item.weight}</p></div>
-                    <span className="text-[10px] font-bold tabular-nums">Rs. {item.price * item.qty}</span>
+                {localCart.map((item) => (
+                  <div key={item.id} className="flex gap-4 items-center group">
+                    <div className="relative w-12 h-14 bg-stone-50 rounded-xl overflow-hidden border border-black/5 flex-shrink-0">
+                      <Image src={item.image} alt={item.name} fill className="object-cover" />
+                    </div>
+                    
+                    <div className="flex-grow">
+                      <h4 className="text-[10px] font-bold uppercase leading-none mb-1">{item.name}</h4>
+                      <p className="text-[8px] font-black text-black/20 uppercase tracking-widest mb-2">{item.weight}</p>
+                      
+                      {/* INVENTORY QUANTITY CONTROLS */}
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => handleUpdateQuantity(item.id, item.qty - 1)}
+                          className="w-5 h-5 rounded-full border border-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer"
+                        >
+                          <Minus size={10} />
+                        </button>
+                        <span className="text-[10px] font-black w-4 text-center">{item.qty}</span>
+                        <button 
+                          onClick={() => handleUpdateQuantity(item.id, item.qty + 1)}
+                          className="w-5 h-5 rounded-full border border-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer"
+                        >
+                          <Plus size={10} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-end gap-2">
+                      <span className="text-[10px] font-bold tabular-nums">Rs. {item.price * item.qty}</span>
+                      {/* DELETE OPTION */}
+                      <button 
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="opacity-0 group-hover:opacity-100 text-stone-400 hover:text-red-500 transition-all cursor-pointer"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
                 ))}
+
+                {localCart.length === 0 && (
+                  <p className="text-center text-xs text-stone-400 py-4">Your checkout cart is empty.</p>
+                )}
               </div>
 
               <div className="space-y-3 pt-6 border-t border-black/5">
                 <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-black/30">
                   <span>Subtotal</span>
-                  <span className="tabular-nums">Rs. {subtotal}</span>
+                  <span className="tabular-nums">Rs. {checkoutSubtotal}</span>
                 </div>
                 
                 <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest">
                   <span className="text-black/30">Logistics</span>
-                  <span className={`tabular-nums ${isFreeDelivery ? 'text-emerald-600' : 'text-orange-900/60'}`}>
-                    {isFreeDelivery ? (
+                  <span className={`tabular-nums ${isEligibleForFreeDelivery ? 'text-emerald-600' : 'text-orange-900/60'}`}>
+                    {isEligibleForFreeDelivery ? (
                       <span className="flex items-center gap-1"><Gift size={10} /> FREE</span>
                     ) : (
                       `Rs. ${deliveryCharges}`
