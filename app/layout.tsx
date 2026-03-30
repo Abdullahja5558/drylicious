@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 
-// Fonts optimization with 'swap' to prevent render-blocking
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -20,25 +19,23 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://drylicious.vercel.app"),
 
   title: {
-    default: "Drylicious Global Foods | Ghar Kay Masalay",
+    default: "Drylicious Global Foods | Buy Pure Spices Online in Pakistan",
     template: "%s | Drylicious",
   },
 
   description:
-    "Drylicious brings you 100% pure, unadulterated whole spices and premium ghar kay masalay in Pakistan. Fresh, organic, and hand-picked spices delivered to your home.",
+    "Buy 100% pure, organic whole spices and ghar kay masalay online in Pakistan. Drylicious offers premium quality masalay with fast delivery.",
 
   keywords: [
     "Drylicious Global Foods",
-    "Whole Spices",
-    "Ghar Kay Masalay",
-    "Organic Spices",
-    "Drylicious",
+    "Buy Spices Online Pakistan",
     "Whole Spices Pakistan",
-    "Organic Masala",
+    "Ghar Kay Masalay",
+    "Organic Masala Pakistan",
     "Sabut Masala",
-    "Premium Spices",
-    "Pakistani Masala Brand",
-    "Faisalabad Masala",
+    "Premium Spices Pakistan",
+    "Best Masala Brand Pakistan",
+    "Faisalabad Spices",
   ],
 
   authors: [{ name: "Drylicious" }],
@@ -50,6 +47,10 @@ export const metadata: Metadata = {
     follow: true,
   },
 
+  alternates: {
+    canonical: "https://drylicious.vercel.app",
+  },
+
   icons: {
     icon: "/favicon.ico",
   },
@@ -57,9 +58,17 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Drylicious | Premium Ghar Kay Masalay",
     description:
-      "Buy premium quality whole spices and ghar kay masalay from Drylicious. 100% pure and organic spices in Pakistan.",
+      "Buy premium quality whole spices and ghar kay masalay from Drylicious. 100% pure spices in Pakistan.",
     url: "https://drylicious.vercel.app",
     siteName: "Drylicious",
+    images: [
+      {
+        url: "https://drylicious.vercel.app/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Drylicious Masalay",
+      },
+    ],
     locale: "en_PK",
     type: "website",
   },
@@ -67,7 +76,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Drylicious | Premium Masalay",
-    description: "100% pure whole spices and ghar kay masalay in Pakistan.",
+    description:
+      "100% pure whole spices and ghar kay masalay in Pakistan.",
+    images: ["https://drylicious.vercel.app/og-image.jpg"],
   },
 };
 
@@ -79,7 +90,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* --- ORGANIZATIONAL SCHEMA --- */}
+        {/* --- ORGANIZATION SCHEMA --- */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -93,6 +104,8 @@ export default function RootLayout({
                 "@type": "ContactPoint",
                 telephone: "+923367999509",
                 contactType: "customer service",
+                areaServed: "PK",
+                availableLanguage: ["English", "Urdu"],
               },
               sameAs: [
                 "https://www.facebook.com/dryliciousfoods",
@@ -102,7 +115,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* --- SEARCH ACTION SCHEMA --- */}
+        {/* --- WEBSITE SEARCH SCHEMA --- */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -120,11 +133,13 @@ export default function RootLayout({
             }),
           }}
         />
+
         {/* --- GOOGLE ANALYTICS --- */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
         ></script>
+
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -136,6 +151,7 @@ export default function RootLayout({
           }}
         />
       </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#FBF9F4] text-[#111111]`}
       >
