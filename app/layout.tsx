@@ -7,7 +7,7 @@ import { CartProvider } from "@/context/CartContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap", 
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -86,15 +86,15 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "Drylicious Global Foods",
-              "url": "https://drylicious.vercel.app",
-              "logo": "https://drylicious.vercel.app/logo.png",
-              "contactPoint": {
+              name: "Drylicious Global Foods",
+              url: "https://drylicious.vercel.app",
+              logo: "https://drylicious.vercel.app/logo.png",
+              contactPoint: {
                 "@type": "ContactPoint",
-                "telephone": "+923367999509",
-                "contactType": "customer service"
+                telephone: "+923367999509",
+                contactType: "customer service",
               },
-              "sameAs": [
+              sameAs: [
                 "https://www.facebook.com/dryliciousfoods",
                 "https://www.instagram.com/dryliciousfoods",
               ],
@@ -109,23 +109,37 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "url": "https://drylicious.vercel.app",
-              "name": "Drylicious Global Foods",
-              "potentialAction": {
+              url: "https://drylicious.vercel.app",
+              name: "Drylicious Global Foods",
+              potentialAction: {
                 "@type": "SearchAction",
-                "target": "https://drylicious.vercel.app/search?q={search_term_string}",
+                target:
+                  "https://drylicious.vercel.app/search?q={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             }),
+          }}
+        />
+        {/* --- GOOGLE ANALYTICS --- */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-XXXXXXXXXX');
+            `,
           }}
         />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#FBF9F4] text-[#111111]`}
       >
-        <CartProvider>
-          {children}
-        </CartProvider>
+        <CartProvider>{children}</CartProvider>
       </body>
     </html>
   );
