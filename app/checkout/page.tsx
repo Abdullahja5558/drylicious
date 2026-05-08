@@ -38,7 +38,6 @@ const CheckoutPage = () => {
   
   const deliveryCharges = isEligibleForFreeDelivery ? 0 : 180;
   
-  // 4. Final total calculation
   const totalAmount = checkoutSubtotal + deliveryCharges;
 
   // Final amount locked for success screen
