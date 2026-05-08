@@ -16,7 +16,7 @@ import { Toaster, toast } from 'sonner';
 const CheckoutPage = () => {
   const router = useRouter();
   
-  // Destructuring needed variables and functions from CartContext
+  
   const { 
     cart, 
     removeFromCart
