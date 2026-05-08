@@ -34,7 +34,6 @@ const CheckoutPage = () => {
 
   const checkoutSubtotal = localCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
   
-  // 2. Free delivery threshold condition (Rs. 3000 or above)
   const isEligibleForFreeDelivery = checkoutSubtotal >= 3000;
   
   // 3. Delivery charges logic: 0 if eligible, otherwise strictly 180
