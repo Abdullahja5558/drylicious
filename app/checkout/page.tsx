@@ -26,8 +26,6 @@ const CheckoutPage = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [step, setStep] = useState(1);
   const [orderId, setOrderId] = useState('');
-  
-  // Local state to manage quantities in checkout before sending to DB
   const [localCart, setLocalCart] = useState(cart);
 
   const [formData, setFormData] = useState({
