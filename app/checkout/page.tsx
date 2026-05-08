@@ -57,7 +57,7 @@ const CheckoutPage = () => {
 
   const handleRemoveItem = (id: string) => {
     setLocalCart((prevCart) => prevCart.filter((item) => item.id !== id));
-    removeFromCart(id); // Context sync
+    removeFromCart(id);
     toast.success("Item removed from cart");
   };
 
