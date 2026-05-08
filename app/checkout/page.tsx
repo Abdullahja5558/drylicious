@@ -31,7 +31,7 @@ const CheckoutPage = () => {
   const [localCart, setLocalCart] = useState(cart);
 
   const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', address: '', city: 'Lahore', zip: ''
+    name: '', email: '', phone: '', address: '', city: '', zip: ''
   });
 
   // 1. Calculate Subtotal dynamically based on local checkout quantities
@@ -149,8 +149,9 @@ const CheckoutPage = () => {
                 <div className="space-y-5">
                   <InputField label="Full Address" placeholder="House #, Street..." value={formData.address} onChange={(v: string) => setFormData({...formData, address: v})} />
                   <div className="grid grid-cols-2 gap-5">
-                    <InputField label="City" placeholder="Lahore" value={formData.city} onChange={(v: string) => setFormData({...formData, city: v})} />
-                    <InputField label="Zip Code" placeholder="54000" value={formData.zip} onChange={(v: string) => setFormData({...formData, zip: v})} />
+                    <InputField label="City"  value={formData.city} onChange={(v: string) => setFormData({...formData, city: v})} />
+                  
+                    <InputField label="Zip Code"  value={formData.zip} onChange={(v: string) => setFormData({...formData, zip: v})} />
                   </div>
                   <div className="flex gap-4 pt-8">
                     <button onClick={() => setStep(1)} className="flex-1 py-7 border border-black/5 rounded-2xl text-[9px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:bg-white transition-colors">Back</button>
