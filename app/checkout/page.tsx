@@ -45,7 +45,6 @@ const CheckoutPage = () => {
   const isStep1Valid = formData.name.length >= 3 && formData.phone.length >= 11;
   const isStep2Valid = formData.address.length >= 10 && formData.city.length >= 3;
 
-  // Function to update quantity in local checkout state
   const handleUpdateQuantity = (id: string, newQty: number) => {
     if (newQty < 1) return;
     
