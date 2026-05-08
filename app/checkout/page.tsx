@@ -32,7 +32,6 @@ const CheckoutPage = () => {
     name: '', email: '', phone: '', address: '', city: '', zip: ''
   });
 
-  // 1. Calculate Subtotal dynamically based on local checkout quantities
   const checkoutSubtotal = localCart.reduce((acc, item) => acc + (item.price * item.qty), 0);
   
   // 2. Free delivery threshold condition (Rs. 3000 or above)
