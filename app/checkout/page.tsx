@@ -55,7 +55,6 @@ const CheckoutPage = () => {
     );
   };
 
-  // Function to remove item directly from checkout view
   const handleRemoveItem = (id: string) => {
     setLocalCart((prevCart) => prevCart.filter((item) => item.id !== id));
     removeFromCart(id); // Context sync
