@@ -36,7 +36,6 @@ const CheckoutPage = () => {
   
   const isEligibleForFreeDelivery = checkoutSubtotal >= 3000;
   
-  // 3. Delivery charges logic: 0 if eligible, otherwise strictly 180
   const deliveryCharges = isEligibleForFreeDelivery ? 0 : 180;
   
   // 4. Final total calculation
