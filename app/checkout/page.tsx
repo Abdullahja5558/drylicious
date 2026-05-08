@@ -40,7 +40,6 @@ const CheckoutPage = () => {
   
   const totalAmount = checkoutSubtotal + deliveryCharges;
 
-  // Final amount locked for success screen
   const [finalStoredTotal, setFinalStoredTotal] = useState(0);
 
   const isStep1Valid = formData.name.length >= 3 && formData.phone.length >= 11;
