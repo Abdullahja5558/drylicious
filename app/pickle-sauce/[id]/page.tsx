@@ -327,7 +327,6 @@ const PickleDetail = () => {
             <ShoppingBag size={22} />
           </button>
 
-          {/* Main Buy Now Button */}
           <button
             onClick={handleBuyNow}
             className="flex-grow flex items-center justify-between px-6 py-5 bg-[#111111] text-white rounded-[22px] shadow-2xl active:scale-95 transition-transform"
