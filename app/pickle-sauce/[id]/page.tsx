@@ -87,7 +87,6 @@ const PickleDetail = () => {
         <PremiumNavbar />
       </div>
 
-      {/* BACK BUTTON */}
       <nav className="fixed top-0 left-0 w-full z-[400] pointer-events-none">
         <div className="max-w-[1600px] mx-auto p-6 md:p-10">
           <motion.button
