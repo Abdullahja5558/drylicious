@@ -260,8 +260,6 @@ const PickleDetail = () => {
                     </span>
                   </motion.a>
                 </div>
-
-                {/* BIG BUY NOW BUTTON */}
                 <motion.button
                   onClick={handleBuyNow}
                   whileHover={{ scale: 1.02 }}
