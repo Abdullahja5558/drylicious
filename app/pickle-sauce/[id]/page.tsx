@@ -320,8 +320,6 @@ const PickleDetail = () => {
               className="fill-emerald-100"
             />
           </a>
-
-          {/* Cart Circle */}
           <button
             onClick={handleAddToCart}
             className="flex-none p-5 bg-white border border-black/10 rounded-[22px] shadow-lg active:scale-95 transition-transform"
