@@ -110,7 +110,7 @@ const PickleDetail = () => {
 
       <main className="max-w-[1400px] mx-auto px-6 pt-44 md:pt-48 pb-32 lg:pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 lg:gap-24 items-start">
-          {/* IMAGE SECTION */}
+          
           <div className="lg:col-span-7 lg:sticky lg:top-36">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
