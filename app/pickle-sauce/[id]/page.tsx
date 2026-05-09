@@ -233,7 +233,6 @@ const PickleDetail = () => {
                 </div>
               </div>
 
-              {/* DESKTOP ACTIONS */}
               <div className="hidden lg:flex flex-col gap-4 pt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <motion.button
