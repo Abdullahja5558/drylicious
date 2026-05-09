@@ -305,7 +305,6 @@ const PickleDetail = () => {
         </div>
       </main>
 
-      {/* MOBILE & TABLET STICKY FOOTER */}
       <div className="lg:hidden fixed bottom-0 left-0 w-full p-4 z-[110] bg-gradient-to-t from-[#FBF9F4] via-[#FBF9F4] to-transparent">
         <div className="max-w-md mx-auto flex items-center gap-2">
           {/* WhatsApp Circle */}
