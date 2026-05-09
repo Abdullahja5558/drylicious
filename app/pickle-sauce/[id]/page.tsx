@@ -54,8 +54,8 @@ const PickleDetail = () => {
   };
   const handleBuyNow = () => {
     if (product) {
-      handleAddToCart(); // Add to cart first
-      router.push("/checkout"); // Then redirect
+      handleAddToCart(); 
+      router.push("/checkout"); 
     }
   };
 
