@@ -133,7 +133,6 @@ const PickleDetail = () => {
             </motion.div>
           </div>
 
-          {/* CONTENT SECTION */}
           <div className="lg:col-span-5 flex flex-col pt-4">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
