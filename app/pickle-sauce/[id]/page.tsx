@@ -52,8 +52,6 @@ const PickleDetail = () => {
       });
     }
   };
-
-  // Direct Checkout Logic
   const handleBuyNow = () => {
     if (product) {
       handleAddToCart(); // Add to cart first
