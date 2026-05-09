@@ -40,7 +40,6 @@ const PickleDetail = () => {
 
   const totalPrice = currentUnitPrice * quantity;
 
-  // Optimized Cart Logic
   const handleAddToCart = () => {
     if (product) {
       addToCart({
